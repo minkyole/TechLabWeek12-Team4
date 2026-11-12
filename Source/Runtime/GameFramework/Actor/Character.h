@@ -29,6 +29,7 @@ public:
 	void HandleAnimNotify(const struct FAnimNotifyEvent& Notify);
 	void HandleAnimNotifyStateBegin(const FAnimNotifyEvent& Notify);
 	void HandleAnimNotifyStateEnd(const FAnimNotifyEvent& Notify);
+	void HandleAnimNotifyStateTick(const FAnimNotifyEvent& Notify, float DeltaSeconds);
 
 private:
 	// Actor의 기본 컴포넌트를 참조한다.

@@ -19,7 +19,7 @@ public:
 	static void SetForceEveryFrame(bool bInForce) { bForceEveryFrame = bInForce; }
 
 private:
-	inline static bool bGPUSkinning = false;
+	inline static bool bGPUSkinning = true;
 	inline static bool bForceEveryFrame = false;
 	inline static uint32 ModeVersion = 1;
 };

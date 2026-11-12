@@ -20,6 +20,7 @@
 
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkinnedMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Render/SkinningSettings.h"
 #include "Components/ShapeComponent.h"
 #include "Asset/LOD/StaticMeshLODSelector.h"
@@ -826,9 +827,12 @@ void UWorld::GatherShadowCasters(FProjectedShadowInfo& ShadowInfo, const FLODVie
 			if (!Proxy->IsVisible() || !Proxy->IsShadowCaster())
 				return;
 
-			// 이번 범위는 정적 메시이며, 에디터 표시용 메시를 제외한다.
-			auto* StaticComponent = Cast<UStaticMeshComponent>(Proxy->GetComponent());
-			if (!StaticComponent || StaticComponent->IsEditorIcon())
+			UPrimitiveComponent* CasterComponent = Proxy->GetComponent();
+			auto* StaticComponent = Cast<UStaticMeshComponent>(CasterComponent);
+			auto* SkeletalComponent = StaticComponent ? nullptr : Cast<USkeletalMeshComponent>(CasterComponent);
+			if (!StaticComponent && !SkeletalComponent)
+				return;
+			if (StaticComponent && StaticComponent->IsEditorIcon())
 				return;
 
 			// BVH가 Frustum 내부 가지를 일괄 방문해도 이 검사는 수행한다.
@@ -849,7 +853,10 @@ void UWorld::GatherShadowCasters(FProjectedShadowInfo& ShadowInfo, const FLODVie
 			// 메시·Proxy·RenderState 검사는 기존 Submit 함수가 담당한다.
 			// 기초 그림자는 카메라와 독립적으로 LOD0를 사용한다.
 			MeshPackets.Reset();
-			StaticComponent->SubmitToRenderQueue(MeshPackets, 0);
+			if (StaticComponent)
+				StaticComponent->SubmitToRenderQueue(MeshPackets, 0);
+			else
+				SkeletalComponent->SubmitToRenderQueue(MeshPackets);
 
 			bool bPacketAdded = false;
 			for (const FRenderPacket& Packet : MeshPackets)
@@ -866,7 +873,7 @@ void UWorld::GatherShadowCasters(FProjectedShadowInfo& ShadowInfo, const FLODVie
 			// 헤싱으로 Shadow Caching 키를 만든다
 			if (bPacketAdded)
 			{
-				uint32 UUID = StaticComponent->GetUUID();
+				uint32 UUID = CasterComponent->GetUUID();
 				uint64 Version = Proxy->GetShadowVersion();
 				ShadowInfo.AddCasterKey(UUID, Version);
 			}

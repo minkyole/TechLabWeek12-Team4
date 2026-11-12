@@ -19,12 +19,26 @@ FString UAnimNotify::GetNotifyName() const
 
 FString UAnimNotify::GetDisplayNameForClass(const UClass* Class)
 {
+	static const FString StatePrefix = "UAnimNotifyState_";
 	static const FString Prefix = "UAnimNotify_";
 
 	FString Name = Class ? Class->GetName() : FString("UAnimNotify");
-	if (Name.starts_with(Prefix))
+	if (Name.starts_with(StatePrefix))
+	{
+		Name = Name.substr(StatePrefix.size()) + " (State)";
+	}
+	else if (Name.starts_with(Prefix))
 	{
 		Name = Name.substr(Prefix.size());
 	}
 	return Name;
+}
+
+bool FAnimNotifyEvent::IsStateEvent() const
+{
+	if (Duration <= 0.0f)
+	{
+		return false;
+	}
+	return Notify == nullptr || Cast<UAnimNotifyState>(Notify) != nullptr;
 }

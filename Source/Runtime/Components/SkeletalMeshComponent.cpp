@@ -51,6 +51,11 @@ void USkeletalMeshComponent::BeginPlay()
 void USkeletalMeshComponent::TickComponent(float DeltaTime)
 {
 	Super::TickComponent(DeltaTime);
+
+	if (AnimInstance && AnimInstance->IsInitialized())
+	{
+		AnimInstance->DispatchQueuedAnimNotifies();
+	}
 }
 
 void USkeletalMeshComponent::InitializeComponent()
@@ -307,6 +312,14 @@ void USkeletalMeshComponent::HandleAnimNotifyStateEnd(const FAnimNotifyEvent& No
 	if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
 	{
 		Character->HandleAnimNotifyStateEnd(Notify);
+	}
+}
+
+void USkeletalMeshComponent::HandleAnimNotifyStateTick(const FAnimNotifyEvent& Notify, float DeltaSeconds)
+{
+	if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
+	{
+		Character->HandleAnimNotifyStateTick(Notify, DeltaSeconds);
 	}
 }
 

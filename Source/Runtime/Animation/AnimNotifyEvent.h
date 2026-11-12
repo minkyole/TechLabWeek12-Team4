@@ -11,6 +11,8 @@ struct FAnimNotifyEvent
 	float Duration = 0.0f;      // 0 이면 한 번, 0 보다 크면 NotifyState
 	FName NotifyName = "";
 	UAnimNotify* Notify = nullptr;
+
+	bool IsStateEvent() const;
 };
 
 struct FQueuedAnimNotify

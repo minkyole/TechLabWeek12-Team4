@@ -42,6 +42,8 @@ void UAnimInstance::UnInitializeAnimation()
 	ExtractedRootMotion.Clear();
     NotifyQueue.Empty();
     NotifyStateQueue.Empty();
+	PendingNotifyDeltaSeconds = 0.0f;
+	bHasPendingNotifyUpdate = false;
 	RootNode = nullptr;
 	OwningComponent = nullptr;
 	bIsInitialized = false;
@@ -69,34 +71,40 @@ void UAnimInstance::UpdateAnimation(float DeltaSeconds)
 	// 이동 쪽이 이전 프레임 값을 안 가져갔으면 버린다. 쌓아 두면 나중에 한꺼번에 튄다
 	ExtractedRootMotion.Clear();
 
-	NotifyQueue.Empty();
 	NotifyStateQueue.Empty();
 
 	// 먼저 그래프에 전달할 변수를 갱신한다.
 	NativeUpdateAnimation(SafeDeltaSeconds);
 
-	if (!RootNode)
+	if (RootNode)
 	{
-		TriggerAnimNotifies();
+		FAnimationUpdateContext Context;
+		Context.AnimInstance = this;
+		Context.DeltaSeconds = SafeDeltaSeconds;
+
+		RootNode->Update(Context);
+	}
+
+	PendingNotifyDeltaSeconds += SafeDeltaSeconds;
+	bHasPendingNotifyUpdate = true;
+}
+
+void UAnimInstance::DispatchQueuedAnimNotifies()
+{
+	if (!bHasPendingNotifyUpdate)
+	{
 		return;
 	}
 
-	FAnimationUpdateContext Context;
-	Context.AnimInstance = this;
-	Context.DeltaSeconds = SafeDeltaSeconds;
-
-	RootNode->Update(Context);
-
-	TriggerAnimNotifies();
-}
-
-void UAnimInstance::TriggerAnimNotifies()
-{
 	USkeletalMeshComponent* MeshComp = GetSkeletalMeshComponent();
+	const float TickDeltaSeconds = PendingNotifyDeltaSeconds;
+	PendingNotifyDeltaSeconds = 0.0f;
+	bHasPendingNotifyUpdate = false;
 
 	auto IsSameState = [](const FQueuedAnimNotify& A, const FQueuedAnimNotify& B)
 	{
-		return A.Sequence == B.Sequence && A.Event.TriggerTime == B.Event.TriggerTime &&
+		return A.Sequence == B.Sequence && A.Event.Notify == B.Event.Notify &&
+			A.Event.TriggerTime == B.Event.TriggerTime &&
 			A.Event.Duration == B.Event.Duration && A.Event.NotifyName == B.Event.NotifyName;
 	};
 	auto ContainsState = [&IsSameState](const TArray<FQueuedAnimNotify>& States, const FQueuedAnimNotify& State)
@@ -127,23 +135,27 @@ void UAnimInstance::TriggerAnimNotifies()
 	// 루프로 같은 구간에 다시 들어갈 때 End가 Begin보다 먼저 나가도록 End부터 보낸다.
 	for (const FQueuedAnimNotify& State : PreviousStates)
 	{
-		if (!ContainsState(CurrentStates, State) && MeshComp)
+		if (!ContainsState(CurrentStates, State))
 		{
-			MeshComp->HandleAnimNotifyStateEnd(State.Event);
-			MeshComp->OnAnimNotifyStateEnd.Broadcast(State.Event, State.Sequence);
+			SendNotifyStateEnd(MeshComp, State);
 		}
 	}
 	for (const FQueuedAnimNotify& State : CurrentStates)
 	{
-		if (!ContainsState(PreviousStates, State) && MeshComp)
+		if (!ContainsState(PreviousStates, State))
 		{
-			MeshComp->HandleAnimNotifyStateBegin(State.Event);
-			MeshComp->OnAnimNotifyStateBegin.Broadcast(State.Event, State.Sequence);
+			SendNotifyStateBegin(MeshComp, State);
 		}
 	}
 
+	for (const FQueuedAnimNotify& State : CurrentStates)
+	{
+		SendNotifyStateTick(MeshComp, State, TickDeltaSeconds);
+	}
+
 	// Notify가 게임 코드를 실행하다 애니메이션을 다시 갱신하면 NotifyQueue가 바뀌므로 복사본을 돈다.
-	const TArray<FQueuedAnimNotify> Pending = NotifyQueue;
+	const TArray<FQueuedAnimNotify> Pending = std::move(NotifyQueue);
+	NotifyQueue.Empty();
 	for (const FQueuedAnimNotify& Queued : Pending)
 	{
 		if (Queued.Event.Notify)
@@ -178,13 +190,59 @@ void UAnimInstance::EndAllNotifyStates()
 	ActiveNotifyStates.Empty();
 	NotifyStateQueue.Empty();
 
-	if (!MeshComp)
-	{
-		return;
-	}
 	for (const FQueuedAnimNotify& State : PreviousStates)
 	{
+		SendNotifyStateEnd(MeshComp, State);
+	}
+}
+
+void UAnimInstance::SendNotifyStateBegin(USkeletalMeshComponent* MeshComp, const FQueuedAnimNotify& State)
+{
+	if (UAnimNotifyState* NotifyState = Cast<UAnimNotifyState>(State.Event.Notify))
+	{
+		NotifyState->NotifyBegin(MeshComp, State.Sequence, State.Event.Duration);
+	}
+	else if (MeshComp)
+	{
+		MeshComp->HandleAnimNotifyStateBegin(State.Event);
+	}
+
+	if (MeshComp)
+	{
+		MeshComp->OnAnimNotifyStateBegin.Broadcast(State.Event, State.Sequence);
+	}
+}
+
+void UAnimInstance::SendNotifyStateTick(USkeletalMeshComponent* MeshComp, const FQueuedAnimNotify& State, float DeltaSeconds)
+{
+	if (UAnimNotifyState* NotifyState = Cast<UAnimNotifyState>(State.Event.Notify))
+	{
+		NotifyState->NotifyTick(MeshComp, State.Sequence, DeltaSeconds);
+	}
+	else if (MeshComp)
+	{
+		MeshComp->HandleAnimNotifyStateTick(State.Event, DeltaSeconds);
+	}
+
+	if (MeshComp)
+	{
+		MeshComp->OnAnimNotifyStateTick.Broadcast(State.Event, State.Sequence, DeltaSeconds);
+	}
+}
+
+void UAnimInstance::SendNotifyStateEnd(USkeletalMeshComponent* MeshComp, const FQueuedAnimNotify& State)
+{
+	if (UAnimNotifyState* NotifyState = Cast<UAnimNotifyState>(State.Event.Notify))
+	{
+		NotifyState->NotifyEnd(MeshComp, State.Sequence);
+	}
+	else if (MeshComp)
+	{
 		MeshComp->HandleAnimNotifyStateEnd(State.Event);
+	}
+
+	if (MeshComp)
+	{
 		MeshComp->OnAnimNotifyStateEnd.Broadcast(State.Event, State.Sequence);
 	}
 }

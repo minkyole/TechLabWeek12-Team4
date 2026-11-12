@@ -231,6 +231,20 @@ void UScriptComponent::OnAnimNotifyEnd(const FString& NotifyName)
     }
 }
 
+void UScriptComponent::OnAnimNotifyTick(const FString& NotifyName, float DeltaSeconds)
+{
+    if (!AnimNotifyTickFunction.valid())
+        return;
+
+    sol::protected_function Function = AnimNotifyTickFunction;
+    sol::protected_function_result Result = Function(NotifyName, DeltaSeconds);
+    if (!Result.valid())
+    {
+        sol::error Error = Result;
+        HTR_LOG(Error, "[Lua] OnAnimNotifyTick: {}", Error.what());
+    }
+}
+
 void UScriptComponent::BindCollisionEvents()
 {
     UnbindCollisionEvents();
@@ -378,6 +392,7 @@ bool UScriptComponent::LoadScript()
     AnimNotifyFunction = Environment["OnAnimNotify"];
     AnimNotifyBeginFunction = Environment["OnAnimNotifyBegin"];
     AnimNotifyEndFunction = Environment["OnAnimNotifyEnd"];
+    AnimNotifyTickFunction = Environment["OnAnimNotifyTick"];
 
     return true;
 }
@@ -606,6 +621,7 @@ bool UScriptComponent::ReloadScript()
 	AnimNotifyFunction = Environment["OnAnimNotify"];
 	AnimNotifyBeginFunction = Environment["OnAnimNotifyBegin"];
 	AnimNotifyEndFunction = Environment["OnAnimNotifyEnd"];
+	AnimNotifyTickFunction = Environment["OnAnimNotifyTick"];
     
     sol::protected_function ReloadFunction = Environment["OnReload"];
 

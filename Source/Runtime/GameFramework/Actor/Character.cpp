@@ -172,4 +172,12 @@ void ACharacter::HandleAnimNotifyStateEnd(const FAnimNotifyEvent& Notify)
 	}
 }
 
+void ACharacter::HandleAnimNotifyStateTick(const FAnimNotifyEvent& Notify, float DeltaSeconds)
+{
+	if (UScriptComponent* Script = ScriptComponent)
+	{
+		Script->OnAnimNotifyTick(Notify.NotifyName.ToString(), DeltaSeconds);
+	}
+}
+
 UStateMachineAnimInstance* ACharacter::GetStateMachineAnimInstance() const { return SkeletalMeshComponent ? Cast<UStateMachineAnimInstance>(SkeletalMeshComponent->GetAnimInstance()) : nullptr; }

@@ -52,7 +52,8 @@ public:
 
 	void QueueAnimNotify(const FAnimNotifyEvent& Event, UAnimSequenceBase* Sequence, float Weight = 1.0f);
 	void QueueAnimNotifyState(const FAnimNotifyEvent& Event, UAnimSequenceBase* Sequence, float Weight = 1.0f);
-	void TriggerAnimNotifies();
+
+	void DispatchQueuedAnimNotifies();
 	void EndAllNotifyStates();
 	const TArray<FQueuedAnimNotify>& GetQueuedNotifies() const { return NotifyQueue; }
 
@@ -66,6 +67,10 @@ protected:
 	FAnimNode_Base* RootNode = nullptr; // 그래프의 시작 노드 (StateMachine 등)
 
 private:
+	static void SendNotifyStateBegin(USkeletalMeshComponent* MeshComp, const FQueuedAnimNotify& State);
+	static void SendNotifyStateTick(USkeletalMeshComponent* MeshComp, const FQueuedAnimNotify& State, float DeltaSeconds);
+	static void SendNotifyStateEnd(USkeletalMeshComponent* MeshComp, const FQueuedAnimNotify& State);
+
 	// 비소유 참조. 컴포넌트가 인스턴스의 수명을 관리한다.
 	FAnimParameterSet Parameters;
 	USkeletalMeshComponent* OwningComponent = nullptr;
@@ -83,6 +88,9 @@ private:
 	TArray<FQueuedAnimNotify> NotifyQueue;
 	TArray<FQueuedAnimNotify> NotifyStateQueue;
 	TArray<FQueuedAnimNotify> ActiveNotifyStates;
+
+	float PendingNotifyDeltaSeconds = 0.0f;
+	bool bHasPendingNotifyUpdate = false;
 };
 
 class UAnimSingleNodeInstance : public UAnimInstance

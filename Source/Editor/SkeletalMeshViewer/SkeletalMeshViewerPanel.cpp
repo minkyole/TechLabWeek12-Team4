@@ -67,7 +67,17 @@ namespace
 
 	bool IsNotifyStateEvent(const FAnimNotifyEvent& Notify)
 	{
-		return Notify.Notify == nullptr && Notify.Duration > 0.0f;
+		return Notify.IsStateEvent();
+	}
+
+	bool IsNotifyStateClass(const UClass* Class)
+	{
+		return Class && Class->IsChildOf(UAnimNotifyState::StaticClass());
+	}
+
+	bool CanHaveNotifyDuration(const FAnimNotifyEvent& Notify)
+	{
+		return Notify.Notify == nullptr || IsNotifyStateClass(Notify.Notify->GetClass());
 	}
 
 	float SnapNotifyTimeToFrame(const UAnimSequence& Sequence, float Time)
@@ -2782,17 +2792,23 @@ void FSkeletalMeshViewerPanel::DrawNotifyProperties(const UAnimDataModel* Model)
 		const bool bIsState = IsNotifyStateEvent(Sequence->Notifies[SelectedNotifyIndex]);
 		for (UClass* NotifyClass : NotifyClasses)
 		{
+			if (!NotifyClass->CanCreateInstance())
+			{
+				continue;
+			}
+
 			const bool bSelected = NotifyObject && NotifyObject->GetClass() == NotifyClass;
 			const FString Label = UAnimNotify::GetDisplayNameForClass(NotifyClass);
-			ImGui::BeginDisabled(bIsState);
+			const bool bDisabled = bIsState && !IsNotifyStateClass(NotifyClass);
+			ImGui::BeginDisabled(bDisabled);
 			if (ImGui::Selectable(Label.c_str(), bSelected) && !bSelected)
 			{
 				SetPreviewNotifyClass(SelectedNotifyIndex, NotifyClass);
 			}
 			ImGui::EndDisabled();
-			if (bIsState && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+			if (bDisabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 			{
-				ImGui::SetTooltip("Notify State supports Name Notify only. Set Duration to 0 first.");
+				ImGui::SetTooltip("Notify State supports Name Notify or NotifyState classes. Set Duration to 0 first.");
 			}
 		}
 		ImGui::EndCombo();
@@ -2864,7 +2880,7 @@ void FSkeletalMeshViewerPanel::DrawNotifyProperties(const UAnimDataModel* Model)
 	if (SelectedNotifyIndex >= 0 && SelectedNotifyIndex < Sequence->Notifies.Num())
 	{
 		const FAnimNotifyEvent& Current = Sequence->Notifies[SelectedNotifyIndex];
-		if (!Current.Notify)
+		if (CanHaveNotifyDuration(Current))
 		{
 			ImGui::SameLine(0.0f, 16.0f);
 			ImGui::TextUnformatted("Duration");
@@ -3287,7 +3303,7 @@ void FSkeletalMeshViewerPanel::SetPreviewNotifyDuration(int32 Index, float Durat
 {
 	UAnimSequence* Sequence = GetSelectedPreviewSequence();
 	FAnimNotifyEvent* Notify = FindPreviewNotify(Sequence, Index);
-	if (!Notify || Notify->Notify)
+	if (!Notify || !CanHaveNotifyDuration(*Notify))
 	{
 		return;
 	}
@@ -3349,7 +3365,14 @@ void FSkeletalMeshViewerPanel::SetPreviewNotifyClass(int32 Index, UClass* Notify
 	}
 
 	Sequence->SetNotifyObject(Index, NewNotify);
-	if (NewNotify)
+	if (NewNotify && IsNotifyStateClass(NotifyClass))
+	{
+		if (Notify->Duration <= 0.0f)
+		{
+			Notify->Duration = std::max(0.0f, std::min(0.25f, Sequence->GetPlayLength() - Notify->TriggerTime));
+		}
+	}
+	else if (NewNotify)
 	{
 		Notify->Duration = 0.0f;
 	}

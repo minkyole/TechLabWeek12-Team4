@@ -31,6 +31,7 @@ public:
 	void OnAnimNotify(const FString& NotifyName);
 	void OnAnimNotifyBegin(const FString& NotifyName);
 	void OnAnimNotifyEnd(const FString& NotifyName);
+	void OnAnimNotifyTick(const FString& NotifyName, float DeltaSeconds);
 
 	bool CreateScriptFromTemplate(const std::filesystem::path& NewScriptPath);
 	bool LoadScript();
@@ -53,6 +54,7 @@ private:
 	sol::protected_function AnimNotifyFunction;
 	sol::protected_function AnimNotifyBeginFunction;
 	sol::protected_function AnimNotifyEndFunction;
+	sol::protected_function AnimNotifyTickFunction;
 
 	FLuaVM* LuaVM = nullptr;
 	sol::state* State = nullptr;

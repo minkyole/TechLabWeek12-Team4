@@ -14,11 +14,6 @@ namespace
 		       (!Instance || Instance->GetEffectiveRootMotionMode() != ERootMotionMode::NoRootMotionExtraction);
 	}
 
-	bool IsNameNotifyState(const FAnimNotifyEvent& Notify)
-	{
-		return Notify.Notify == nullptr && Notify.Duration > 0.0f;
-	}
-
 	// 구간 [StateStart, StateStart + Duration]이 이번 프레임에 재생 헤드가 지난 범위와 겹치는지.
 	// 정방향은 (Start, End], 역방향은 [End, Start)로 보고, 멈춘 프레임은 현재 시간이 구간 안인지 본다.
 	bool IsNotifyStateActive(double StateStart, double Duration, double Start, double End, double Length, bool bLoop, bool bReverse)
@@ -270,7 +265,7 @@ void FAnimNode_SequencePlayer::GatherNotifies(
 
 	for (const FAnimNotifyEvent& Notify : Sequence->Notifies)
 	{
-		if (IsNameNotifyState(Notify))
+		if (Notify.IsStateEvent())
 		{
 			continue;
 		}
@@ -302,7 +297,7 @@ void FAnimNode_SequencePlayer::GatherNotifyStates(const FAnimationUpdateContext&
 
 	for (const FAnimNotifyEvent& Notify : Sequence->Notifies)
 	{
-		if (IsNameNotifyState(Notify) && IsNotifyStateActive(Notify.TriggerTime, Notify.Duration, Start, End, Length, bLoop, IsReversePlay()))
+		if (Notify.IsStateEvent() && IsNotifyStateActive(Notify.TriggerTime, Notify.Duration, Start, End, Length, bLoop, IsReversePlay()))
 		{
 			Context.AnimInstance->QueueAnimNotifyState(Notify, Sequence);
 		}
@@ -380,7 +375,7 @@ void FAnimNode_BlendSpacePlayer::GatherNotifies(
 
 		for (const FAnimNotifyEvent& Notify : SampleSequence->Notifies)
 		{
-			if (IsNameNotifyState(Notify))
+			if (Notify.IsStateEvent())
 			{
 				continue;
 			}
@@ -424,7 +419,7 @@ void FAnimNode_BlendSpacePlayer::GatherNotifyStates(const FAnimationUpdateContex
 
 		for (const FAnimNotifyEvent& Notify : SampleSequence->Notifies)
 		{
-			if (IsNameNotifyState(Notify) &&
+			if (Notify.IsStateEvent() &&
 				IsNotifyStateActive(Notify.TriggerTime, Notify.Duration, Start, End, SampleLength, bLoop, IsReversePlay()))
 			{
 				Context.AnimInstance->QueueAnimNotifyState(Notify, SampleSequence, Entry.Weight);
