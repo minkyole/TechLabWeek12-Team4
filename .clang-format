@@ -1,0 +1,21 @@
+# REFLECT_START ~ REFLECT_END를 블록으로 인식시켜 자동 정렬 때 들여쓰기가 밀리지 않게 한다.
+# 나머지는 기존 코드 스타일(탭, Allman, 줄 길이 제한 없음)에 맞춘 값이다. Visual Studio는 이 파일이 있으면 자동 정렬에 clang-format을 쓴다.
+BasedOnStyle: Microsoft
+UseTab: ForIndentation
+TabWidth: 4
+IndentWidth: 4
+ColumnLimit: 0
+AccessModifierOffset: -4
+BreakBeforeBraces: Allman
+PointerAlignment: Left
+SortIncludes: Never
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortBlocksOnASingleLine: Always
+AllowShortLoopsOnASingleLine: true
+NamespaceIndentation: All
+MacroBlockBegin: "^REFLECT_START"
+MacroBlockEnd: "^REFLECT_END"
+Cpp11BracedListStyle: false
+MaxEmptyLinesToKeep: 3
+FixNamespaceComments: false

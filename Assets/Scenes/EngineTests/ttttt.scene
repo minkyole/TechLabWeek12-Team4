@@ -1,0 +1,144 @@
+{
+    "Version": 5,
+    "World": {
+        "ObjectLabel": "",
+        "PersistentLevel": {
+            "ObjectLabel": "",
+            "Actors": [
+                {
+                    "RootComponent": "DefaultSceneRoot",
+                    "ObjectLabel": "",
+                    "Class": "AActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "DefaultSceneRoot",
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "ObjectLabel": "UBoxComponent_0",
+                            "Class": "UBoxComponent",
+                            "Name": "UBoxComponent_0",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 4.900000095367432,
+                                    "Y": 1.7999999523162842,
+                                    "Z": 0.5
+                                },
+                                "ShapeColor": 4288517599,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bCastShadow": true,
+                                "bDrawOnlyIfSelected": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "ObjectLabel": "USphereComponent_0",
+                            "Class": "USphereComponent",
+                            "Name": "USphereComponent_0",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "ShapeColor": 4288517599,
+                                "SphereRadius": 4.699999809265137,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bCastShadow": true,
+                                "bDrawOnlyIfSelected": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "ObjectLabel": "UCapsuleComponent_0",
+                            "Class": "UCapsuleComponent",
+                            "Name": "UCapsuleComponent_0",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "CapsuleHalfHeight": 27.5,
+                                "CapsuleRadius": 0.4000000059604645,
+                                "ShapeColor": 4294967295,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bCastShadow": true,
+                                "bDrawOnlyIfSelected": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Properties": {}
+                }
+            ],
+            "Properties": {}
+        },
+        "Properties": {}
+    }
+}

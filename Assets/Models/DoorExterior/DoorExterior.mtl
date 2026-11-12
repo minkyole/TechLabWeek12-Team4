@@ -1,0 +1,47 @@
+newmtl Concrete
+Kd 0.72 0.77 0.73
+Ks 0.12 0.12 0.12
+Ns 28
+d 1.0
+map_Kd ../../Textures/Campus/Concrete_BaseColor.png
+map_bump ../../Textures/Campus/Concrete_Normal.png
+newmtl Steel
+Kd 0.48 0.6 0.6
+Ks 0.12 0.12 0.12
+Ns 28
+d 1.0
+map_Kd ../../Textures/Facility/RustedSteel_BaseColor.png
+map_bump ../../Textures/Facility/RustedSteel_Normal.png
+newmtl Dark
+Kd 0.055 0.08 0.085
+Ks 0.12 0.12 0.12
+Ns 28
+d 1.0
+newmtl Warning
+Kd 0.88 0.61 0.19
+Ks 0.12 0.12 0.12
+Ns 28
+d 1.0
+newmtl Ivory
+Kd 0.78 0.83 0.75
+Ks 0.12 0.12 0.12
+Ns 28
+d 1.0
+newmtl Lens
+Kd 1.0 0.83 0.48
+Ks 0.12 0.12 0.12
+Ns 28
+d 1.0
+newmtl Blue
+Kd 0.1 0.2 0.24
+Ks 0.12 0.12 0.12
+Ns 28
+d 1.0
+newmtl AssemblyPoint
+Kd 1 1 1
+d 1.0
+map_Kd ../../Textures/DoorExterior/AssemblyPoint.png
+newmtl AccessSign
+Kd 1 1 1
+d 1.0
+map_Kd ../../Textures/DoorExterior/AccessSign.png

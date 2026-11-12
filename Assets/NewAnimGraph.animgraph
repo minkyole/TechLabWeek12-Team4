@@ -1,0 +1,43 @@
+{
+  "Graph": {
+    "Links": [
+      {
+        "From": 2,
+        "Id": 1,
+        "Input": 0,
+        "To": 1
+      }
+    ],
+    "Nodes": [
+      {
+        "Asset": "",
+        "Id": 1,
+        "Loop": true,
+        "Parameter": "",
+        "Playing": true,
+        "Rate": 1.0,
+        "Type": 4,
+        "Value": 0.0,
+        "X": 666.0,
+        "Y": 17.0
+      },
+      {
+        "Asset": "Assets/NewStateMachine.animsm",
+        "Id": 2,
+        "Loop": true,
+        "Parameter": "",
+        "Playing": true,
+        "Rate": 1.0,
+        "Type": 3,
+        "Value": 0.0,
+        "X": 150.0,
+        "Y": -11.0
+      }
+    ]
+  },
+  "Mesh": "Models/UAL1_Standard_RM.fbx",
+  "Parameters": [],
+  "Type": "AnimGraph",
+  "UpdateScript": "",
+  "Version": 1
+}

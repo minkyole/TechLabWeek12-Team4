@@ -1,0 +1,8 @@
+Mode: built-in image_gen edit
+Source: Assets/Textures/Facility/RustedSteel_BaseColor.png
+
+Use case: precise-object-edit
+Asset type: production tangent-space RGB normal map for a real-time 3D game, matched pixel-for-pixel to the supplied base-color texture.
+Input image: Image 1 is the exact UV-aligned base-color texture to convert into its matching NORMAL map. Preserve every rivet, panel border, central cross seam, pitting and chipped-paint shape in exactly the same location. Do not redraw or reinterpret the pattern. Keep the exact square framing, dimensions, orientation, crop and UV registration.
+Primary request: output ONLY the tangent-space normal texture corresponding to this rusted steel panel. Flat steel is neutral RGB (128,128,255). The seams are recessed, all rivets are raised smooth domes, rust is slightly rough and pitted, paint chips have subtle raised edges. Most of the surface is nearly flat with fine subtle relief; strong bevel normals only along seams and rivet edges. No broad height changes caused merely by albedo color or water stains. Neutral purple-blue normal-map colors only, no original diffuse color, no lighting, no grayscale height, no text or legend.
+Convention: tangent +X is image right, tangent +Y is image up; raised features have bright red on their right-facing slopes and bright green on their upward-facing slopes. This is an OpenGL-style +Y normal texture. Blue encodes positive outward Z and remains high. Normal vectors must be normalized; the flat base must be (128,128,255). Seamless repeat at all four edges. Output opaque lossless PNG. This is technical texture data, not an artistic purple recolor or a shaded render.

@@ -1,0 +1,53 @@
+newmtl EscapeGreen
+Kd 0.06 0.4 0.27
+Ks 0.1 0.1 0.1
+Ns 24
+d 1.0
+newmtl DoorPaint
+Kd 1.0 1.0 1.0
+Ks 0.1 0.1 0.1
+Ns 24
+d 1.0
+map_Kd ../../Textures/EscapeRoute/EmergencyDoorPaint_BaseColor.png
+newmtl FrameSteel
+Kd 0.24 0.31 0.29
+Ks 0.1 0.1 0.1
+Ns 24
+d 1.0
+newmtl Dark
+Kd 0.035 0.055 0.05
+Ks 0.1 0.1 0.1
+Ns 24
+d 1.0
+newmtl Rim
+Kd 0.62 0.68 0.65
+Ks 0.1 0.1 0.1
+Ns 24
+d 1.0
+newmtl White
+Kd 0.86 0.94 0.85
+Ks 0.1 0.1 0.1
+Ns 24
+d 1.0
+newmtl Glass
+Kd 0.15 0.32 0.34
+Ks 0.1 0.1 0.1
+Ns 24
+d 1.0
+newmtl Screen
+Kd 0.22 0.94 0.45
+Ks 0.1 0.1 0.1
+Ns 24
+d 1.0
+newmtl ExitSign
+Kd 1 1 1
+d 1.0
+map_Kd ../../Textures/EscapeRoute/ExitSign.png
+newmtl RouteSign
+Kd 1 1 1
+d 1.0
+map_Kd ../../Textures/EscapeRoute/RouteSign.png
+newmtl ExteriorNotice
+Kd 1 1 1
+d 1.0
+map_Kd ../../Textures/EscapeRoute/ExteriorNotice.png

@@ -1,0 +1,34 @@
+newmtl Steel
+Kd 0.4 0.48 0.5
+d 1.0
+map_Kd ../../Textures/Facility/RustedSteel_BaseColor.png
+map_bump ../../Textures/Facility/RustedSteel_Normal.png
+newmtl Rust
+Kd 0.55 0.25 0.12
+d 1.0
+map_Kd ../../Textures/Facility/RustedSteel_BaseColor.png
+map_bump ../../Textures/Facility/RustedSteel_Normal.png
+newmtl Dark
+Kd 0.055 0.075 0.085
+d 1.0
+newmtl Warning
+Kd 0.88 0.55 0.1
+d 1.0
+newmtl Ivory
+Kd 0.74 0.77 0.7
+d 1.0
+newmtl Lens
+Kd 0.6 0.77 0.83
+d 1.0
+newmtl GarageSign
+Kd 1 1 1
+d 1.0
+map_Kd ../../Textures/Campus/GarageSign.png
+newmtl YardSign
+Kd 1 1 1
+d 1.0
+map_Kd ../../Textures/Campus/YardSign.png
+newmtl FuelSign
+Kd 1 1 1
+d 1.0
+map_Kd ../../Textures/Campus/FuelSign.png

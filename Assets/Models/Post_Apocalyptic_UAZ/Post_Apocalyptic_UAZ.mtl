@@ -1,0 +1,60 @@
+# Blender 4.1.1 MTL File: 'Post_Apocalyptic_UAZ.blend'
+# www.blender.org
+
+newmtl Material
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.122138 0.173409 0.258183
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+
+newmtl _body_source
+Ka 1.000000 1.000000 1.000000
+Ks 0.472727 0.472727 0.472727
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/body_uaz_BaseColor.png
+map_Ns textures/body_uaz_Roughness.png
+map_refl textures/body_uaz_Metallic.png
+map_bump textures/body_uaz_Normal.png
+
+newmtl _other_source
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd textures/other_uaz_Base_color.png
+map_Ns textures/other_uaz_Roughness.png
+map_refl textures/other_uaz_Metallic.png
+map_bump textures/other_uaz_Normal.png
+
+newmtl _rama_source
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd textures/rama_uaz_BaseColor.png
+map_Ns textures/rama_uaz_Roughness.png
+map_refl textures/rama_uaz_Metallic.png
+map_bump textures/rama_uaz_Normal.png
+
+newmtl _whels
+Ka 1.000000 1.000000 1.000000
+Ks 0.490909 0.490909 0.490909
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd textures/whels_uaz_BaseColor.png
+map_Ns textures/whels_uaz_Roughness.png
+map_refl textures/whels_uaz_Metallic.png
+map_bump textures/whels_uaz_Normal.png

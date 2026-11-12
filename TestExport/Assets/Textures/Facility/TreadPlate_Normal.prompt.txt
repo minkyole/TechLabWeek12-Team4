@@ -1,0 +1,8 @@
+Mode: built-in image_gen edit
+Source: Assets/Textures/Facility/TreadPlate_BaseColor.png
+
+Use case: precise-object-edit
+Asset type: production tangent-space RGB normal map for a real-time 3D game, matched pixel-for-pixel to the supplied steel floor base-color texture.
+Input image: Image 1 is the exact UV-aligned base-color texture to convert into its matching NORMAL map. Preserve the exact number, placement, shape, spacing and diagonal orientation of every raised diamond tread. Do not redraw or reinterpret the repeated pattern. Keep the exact square framing, dimensions, orientation, crop and UV registration.
+Primary request: output ONLY the matching tangent-space normal texture. Flat floor plate is neutral RGB (128,128,255). Each diamond tread is a raised shallow steel lozenge with a narrow smoothly beveled edge and a mostly flat top. Include only subtle fine pitting between treads. No broad bumps from rust color or shadows. The flat area between treads should dominate and stay neutral blue-purple. The treads need crisp directional normals at their edges so a moving flashlight reveals the raised pattern. No original diffuse colors, no lighting, no height map, no text, no legend.
+Convention: tangent +X is image right, tangent +Y is image up; raised features have bright red on their right-facing slopes and bright green on their upward-facing slopes. This is an OpenGL-style +Y normal texture. Blue encodes positive outward Z and remains high. Normal vectors must be normalized; flat pixels must be (128,128,255). Seamless repeat at all four edges. Output opaque lossless PNG. Technical texture data only, not an artistic purple recolor or a shaded render.

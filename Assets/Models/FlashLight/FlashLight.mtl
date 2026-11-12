@@ -1,0 +1,41 @@
+# MTL file - created by a modified js OBJExporter
+
+newmtl light
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pm 1
+Pr 0.770007622
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 1 1 1
+map_Kd FlashLight_Light_BaseColor.png
+map_Ke FlashLight_Light_Emissive.png
+map_Pm FlashLight_Light_Metallic.png
+map_Pr FlashLight_Light_Metallic.png
+norm FlashLight_Light_Normal.png
+map_Ka FlashLight_Light_Metallic.png
+
+newmtl glass
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pm 1
+Pds 1
+Pl 1
+Pccns 1-1
+Prfl 0.5
+Pior 1.5
+Pshc 0 0 0
+Pshr 1
+Psi 1
+Psc 1 1 1
+Ptr 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 0.1391006098 0.1391006098 0.1391006098
+map_Kd FlashLight_Glass_BaseColor.png
+map_Ke FlashLight_Glass_Emissive.png
+map_Ptrm FlashLight_Glass_Transmission.png

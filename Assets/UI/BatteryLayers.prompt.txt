@@ -1,0 +1,9 @@
+Generation method: built-in image_gen edits (transparent_background: true)
+Reference: Assets/UI/Battery.png
+Output assets: Assets/UI/BatteryFrame.png, Assets/UI/BatteryFill.png
+
+BatteryFrame final prompt:
+Edit target: the supplied Battery.png. Extract ONLY the outer battery outline and right terminal, removing ALL FOUR large interior charge blocks completely to genuine transparency. Keep the original outer frame silhouette, original pale ivory color, worn edge details, exact position and scale. The entire empty cavity inside the frame must be transparent. Preserve the exact original 2172x724 canvas, no crop, no reposition, no added elements. Output a single transparent PNG sprite used as the always-visible border layer of a game HUD. This layer will overlay another sprite with the exact same canvas alignment.
+
+BatteryFill final prompt:
+Edit target: the supplied Battery.png. Extract ONLY the four large interior charge blocks, removing the entire outer frame and right terminal completely to genuine transparency. Keep the four original ivory rounded charge blocks at their EXACT original positions and size on the exact original 2172x724 canvas; preserve transparent gaps. No crop, no reposition, no enclosing outline, no terminal, no new marks. Output a single transparent PNG sprite used as the charge fill layer of a game HUD. This layer must align with the original frame when both images use the same rectangle.

@@ -1,0 +1,777 @@
+{
+    "Version": 5,
+    "World": {
+        "ObjectLabel": "",
+        "PersistentLevel": {
+            "ObjectLabel": "",
+            "Actors": [
+                {
+                    "ObjectLabel": "",
+                    "Class": "ASkyLightActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "USkyLightComponent",
+                            "Class": "USkyLightComponent",
+                            "Name": "USkyLightComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "Intensity": 0.2,
+                                "LightColor": 4294967295,
+                                "ShadowBias": 0.001,
+                                "ShadowMapResolution": 1024,
+                                "ShadowPCFKernelSize": 2,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bCastShadows": true,
+                                "bUsePCSS": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "USkyLightComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADirectionalLightActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDirectionalLightComponent",
+                            "Class": "UDirectionalLightComponent",
+                            "Name": "UDirectionalLightComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "CascadeCount": 4,
+                                "CascadeDistributionExponent": 3.0,
+                                "CascadeTransitionFraction": 0.1,
+                                "Intensity": 1.0,
+                                "LightColor": 4294967295,
+                                "ShadowBias": 0.001,
+                                "ShadowDistance": 100.0,
+                                "ShadowMapResolution": 1024,
+                                "ShadowPCFKernelSize": 2,
+                                "SourceAngle": 1.1459156274795532,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 55.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 30.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bCastShadows": true,
+                                "bUseCSM": false,
+                                "bUsePCSS": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDirectionalLightComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "AStaticMeshActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UStaticMeshComponent",
+                            "Class": "UStaticMeshComponent",
+                            "Name": "UStaticMeshComponent",
+                            "OverrideMaterials": [],
+                            "Parent": "",
+                            "Properties": {
+                                "StaticMesh": "Cube",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": -0.5
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 80.0,
+                                        "Y": 80.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UStaticMeshComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADecalActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.9,
+                                    "G": 0.2,
+                                    "B": 0.2
+                                },
+                                "DecalSize": {
+                                    "X": 1.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.0,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": -9.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": false,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADecalActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.2,
+                                    "G": 0.8,
+                                    "B": 0.3
+                                },
+                                "DecalSize": {
+                                    "X": 1.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.0,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": -3.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": false,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADecalActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.2,
+                                    "G": 0.4,
+                                    "B": 0.9
+                                },
+                                "DecalSize": {
+                                    "X": 1.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.0,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 3.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": false,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADecalActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.9,
+                                    "G": 0.8,
+                                    "B": 0.2
+                                },
+                                "DecalSize": {
+                                    "X": 1.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.0,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 9.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": false,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "AFakeSpotLightActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.6,
+                                    "G": 0.52,
+                                    "B": 0.4
+                                },
+                                "DecalSize": {
+                                    "X": 3.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.0,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 8.0,
+                                        "Y": -6.0,
+                                        "Z": 1.5
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": true,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "AFakeSpotLightActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.6,
+                                    "G": 0.52,
+                                    "B": 0.4
+                                },
+                                "DecalSize": {
+                                    "X": 3.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.0,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 8.0,
+                                        "Y": 0.0,
+                                        "Z": 1.5
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": true,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "AFakeSpotLightActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.6,
+                                    "G": 0.52,
+                                    "B": 0.4
+                                },
+                                "DecalSize": {
+                                    "X": 3.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.0,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 8.0,
+                                        "Y": 2.5,
+                                        "Z": 1.5
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": true,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADecalActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.9,
+                                    "G": 0.4,
+                                    "B": 0.8
+                                },
+                                "DecalSize": {
+                                    "X": 1.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.1,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": -10.0,
+                                        "Y": -6.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": false,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADecalActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.9,
+                                    "G": 0.4,
+                                    "B": 0.8
+                                },
+                                "DecalSize": {
+                                    "X": 1.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.1,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": -10.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": false,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADecalActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.9,
+                                    "G": 0.4,
+                                    "B": 0.8
+                                },
+                                "DecalSize": {
+                                    "X": 1.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 0.0,
+                                "FadeInDuration": 0.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.1,
+                                "FadeStartDelay": 0.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": -10.0,
+                                        "Y": 6.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": false,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADecalActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 0.3,
+                                    "G": 0.9,
+                                    "B": 0.9
+                                },
+                                "DecalSize": {
+                                    "X": 1.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 3.0,
+                                "FadeInDuration": 1.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.0,
+                                "FadeStartDelay": 3.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": -18.0,
+                                        "Y": -3.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": false,
+                                "bDestroyOwnerAfterFade": true
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                },
+                {
+                    "ObjectLabel": "",
+                    "Class": "ADecalActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UDecalComponent",
+                            "Class": "UDecalComponent",
+                            "Name": "UDecalComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "DecalColor": {
+                                    "A": 1.0,
+                                    "R": 1.0,
+                                    "G": 0.6,
+                                    "B": 0.2
+                                },
+                                "DecalSize": {
+                                    "X": 1.0,
+                                    "Y": 2.0,
+                                    "Z": 2.0
+                                },
+                                "DecalTexture": "Textures/Decal/FakeSpotLight.png",
+                                "FadeDuration": 3.0,
+                                "FadeInDuration": 1.0,
+                                "FadeInStartDelay": 0.0,
+                                "FadeScreenSize": 0.0,
+                                "FadeStartDelay": 3.0,
+                                "SortOrder": 0,
+                                "Transform": {
+                                    "Location": {
+                                        "X": -18.0,
+                                        "Y": 3.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAdditive": false,
+                                "bDestroyOwnerAfterFade": false
+                            }
+                        }
+                    ],
+                    "Properties": {},
+                    "RootComponent": "UDecalComponent"
+                }
+            ],
+            "Properties": {}
+        },
+        "Properties": {}
+    }
+}

@@ -1,0 +1,431 @@
+{
+    "Version": 5,
+    "World": {
+        "ObjectLabel": "",
+        "PersistentLevel": {
+            "ObjectLabel": "",
+            "Actors": [
+                {
+                    "ObjectLabel": "AStaticMeshActor_0",
+                    "Class": "AStaticMeshActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UStaticMeshComponent",
+                            "Class": "UStaticMeshComponent",
+                            "Name": "UStaticMeshComponent",
+                            "OverrideMaterials": [],
+                            "Parent": "",
+                            "Properties": {
+                                "StaticMesh": "Cube",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 25.011425018310547,
+                                        "Y": 28.613056182861328,
+                                        "Z": 0.009999999776482582
+                                    }
+                                },
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "AStaticMeshActor_0",
+                    "Properties": {},
+                    "RootComponent": "UStaticMeshComponent"
+                },
+                {
+                    "ObjectLabel": "AStaticMeshActor_1",
+                    "Class": "AStaticMeshActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "UStaticMeshComponent",
+                            "Class": "UStaticMeshComponent",
+                            "Name": "UStaticMeshComponent",
+                            "OverrideMaterials": [],
+                            "Parent": "",
+                            "Properties": {
+                                "StaticMesh": "Models/Shiba/Shiba.obj",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.9868321418762207
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "AStaticMeshActor_1",
+                    "Properties": {},
+                    "RootComponent": "UStaticMeshComponent"
+                },
+                {
+                    "ObjectLabel": "ASpotLightActor_0",
+                    "Class": "ASpotLightActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "USpotLightComponent",
+                            "Class": "USpotLightComponent",
+                            "Name": "USpotLightComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "AttenuationRadius": 5.0,
+                                "InnerConeAngle": 15.0,
+                                "Intensity": 1.0,
+                                "LightColor": 4294967295,
+                                "LightFalloffExponent": 1.0,
+                                "OuterConeAngle": 30.0,
+                                "ShadowBias": 0.0010000000474974513,
+                                "ShadowMapResolution": 1024,
+                                "ShadowPCFKernelSize": 2,
+                                "SourceRadius": 0.029999999329447746,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 2.9510648250579834
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 81.73577117919922,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bCastShadows": true,
+                                "bUsePCSS": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "ObjectLabel": "UBillboardComponent",
+                            "Class": "UBillboardComponent",
+                            "Material": {
+                                "Base": "SubUVMaterial",
+                                "Instance": {
+                                    "ObjectLabel": "",
+                                    "BaseColor": {
+                                        "W": 1.0,
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    },
+                                    "BlendState": "AlphaBlend",
+                                    "Properties": {},
+                                    "SamplerState": "LinearClamp",
+                                    "Shininess": 32.0,
+                                    "Textures": [
+                                        "Resources/Icons/Spot.png"
+                                    ],
+                                    "UVScrollSpeed": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                }
+                            },
+                            "Name": "UBillboardComponent",
+                            "Parent": "USpotLightComponent",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "ObjectLabel": "UArrowComponent",
+                            "Class": "UStaticMeshComponent",
+                            "Name": "UArrowComponent",
+                            "OverrideMaterials": [
+                                {
+                                    "Asset": "EditorArrowMaterial"
+                                }
+                            ],
+                            "Parent": "USpotLightComponent",
+                            "Properties": {
+                                "StaticMesh": "Arrow",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 0.30000001192092896,
+                                        "Y": 0.30000001192092896,
+                                        "Z": 0.5
+                                    }
+                                },
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "ASpotLightActor_0",
+                    "Properties": {},
+                    "RootComponent": "USpotLightComponent"
+                },
+                {
+                    "ObjectLabel": "ASequenceActor_0",
+                    "Class": "ASequenceActor",
+                    "Components": [
+                        {
+                            "ObjectLabel": "SequenceRoot",
+                            "Class": "USceneComponent",
+                            "Name": "SequenceRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 3.7993650436401367
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "Name": "ASequenceActor_0",
+                    "Properties": {
+                        "bAutoPlay": true
+                    },
+                    "RootComponent": "SequenceRoot",
+                    "Sequence": {
+                        "DurationSeconds": 15,
+                        "FPS": 144,
+                        "StartFrame": 0,
+                        "Tracks": [
+                            {
+                                "Color": {
+                                    "A": 0.30000001192092896,
+                                    "B": 0.8999999761581421,
+                                    "G": 0.5899999737739563,
+                                    "R": 0.3100000023841858
+                                },
+                                "Name": "Viewport Camera",
+                                "Sections": [
+                                    {
+                                        "Curve": 0,
+                                        "EaseExp": 2.0,
+                                        "Keys": [
+                                            {
+                                                "FOV": 60.0,
+                                                "Frame": 0,
+                                                "Location": {
+                                                    "X": -6.105680465698242,
+                                                    "Y": -4.931100368499756,
+                                                    "Z": 4.266634464263916
+                                                },
+                                                "Rotation": {
+                                                    "Pitch": 21.99956703186035,
+                                                    "Roll": 4.604109449246607e-07,
+                                                    "Yaw": 32.82386779785156
+                                                }
+                                            },
+                                            {
+                                                "FOV": 60.0,
+                                                "Frame": 399,
+                                                "Location": {
+                                                    "X": -7.7128520011901855,
+                                                    "Y": 4.896295547485352,
+                                                    "Z": 5.1441779136657715
+                                                },
+                                                "Rotation": {
+                                                    "Pitch": 25.999563217163086,
+                                                    "Roll": 0.0,
+                                                    "Yaw": -30.176063537597656
+                                                }
+                                            }
+                                        ],
+                                        "UseShortestRotation": true
+                                    },
+                                    {
+                                        "Curve": 0,
+                                        "EaseExp": 2.0,
+                                        "Keys": [
+                                            {
+                                                "FOV": 60.0,
+                                                "Frame": 399,
+                                                "Location": {
+                                                    "X": -7.7128520011901855,
+                                                    "Y": 4.896295547485352,
+                                                    "Z": 5.1441779136657715
+                                                },
+                                                "Rotation": {
+                                                    "Pitch": 25.999563217163086,
+                                                    "Roll": 0.0,
+                                                    "Yaw": -30.17606544494629
+                                                }
+                                            },
+                                            {
+                                                "FOV": 60.0,
+                                                "Frame": 800,
+                                                "Location": {
+                                                    "X": -2.188380718231201,
+                                                    "Y": -0.1044502779841423,
+                                                    "Z": 1.5053750276565552
+                                                },
+                                                "Rotation": {
+                                                    "Pitch": 5.999595642089844,
+                                                    "Roll": 0.0,
+                                                    "Yaw": -6.176080703735352
+                                                }
+                                            }
+                                        ],
+                                        "UseShortestRotation": true
+                                    },
+                                    {
+                                        "Curve": 0,
+                                        "EaseExp": 2.0,
+                                        "Keys": [
+                                            {
+                                                "FOV": 60.0,
+                                                "Frame": 800,
+                                                "Location": {
+                                                    "X": -2.188380718231201,
+                                                    "Y": -0.1044502779841423,
+                                                    "Z": 1.5053750276565552
+                                                },
+                                                "Rotation": {
+                                                    "Pitch": 5.999595642089844,
+                                                    "Roll": 0.0,
+                                                    "Yaw": -6.176080703735352
+                                                }
+                                            },
+                                            {
+                                                "FOV": 60.0,
+                                                "Frame": 1103,
+                                                "Location": {
+                                                    "X": -2.188380718231201,
+                                                    "Y": -0.1044502779841423,
+                                                    "Z": 1.5053750276565552
+                                                },
+                                                "Rotation": {
+                                                    "Pitch": 5.999595642089844,
+                                                    "Roll": 360.0,
+                                                    "Yaw": -6.176080703735352
+                                                }
+                                            }
+                                        ],
+                                        "UseShortestRotation": false
+                                    }
+                                ],
+                                "Type": "Camera"
+                            },
+                            {
+                                "Color": {
+                                    "A": 0.30000001192092896,
+                                    "B": 0.8199999928474426,
+                                    "G": 0.4300000071525574,
+                                    "R": 0.5899999737739563
+                                },
+                                "Name": "Fade",
+                                "Sections": [
+                                    {
+                                        "Curve": 0,
+                                        "EaseExp": 2.0,
+                                        "Keys": [
+                                            {
+                                                "Alpha": 0.0,
+                                                "Frame": 1103
+                                            },
+                                            {
+                                                "Alpha": 1.0,
+                                                "Frame": 1401
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Curve": 0,
+                                        "EaseExp": 2.0,
+                                        "Keys": [
+                                            {
+                                                "Alpha": 1.0,
+                                                "Frame": 1401
+                                            },
+                                            {
+                                                "Alpha": 0.0,
+                                                "Frame": 1667
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "Type": "Fade"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "Properties": {}
+        },
+        "Properties": {}
+    }
+}

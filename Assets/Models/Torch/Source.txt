@@ -1,0 +1,7 @@
+KayKit - Dungeon Remastered 1.0
+Author: Kay Lousberg
+Source: https://github.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0
+Revision: b0ca9bd96a8072ab36a3a5464f00ed1e06a16d07
+Original files: addons/kaykit_dungeon_remastered/Assets/obj/torch_mounted.obj, torch_mounted.mtl, dungeon_texture.png
+License: CC0 1.0 Universal (see LICENSE.txt)
+Changes: renamed the OBJ/MTL/texture files and updated their relative references.

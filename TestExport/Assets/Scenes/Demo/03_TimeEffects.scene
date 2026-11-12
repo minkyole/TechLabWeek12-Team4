@@ -1,0 +1,885 @@
+{
+  "Version": 5,
+  "World": {
+    "ObjectLabel": "",
+    "PersistentLevel": {
+      "ObjectLabel": "",
+      "Actors": [
+        {
+          "ObjectLabel": "TimeEffectsPresentationCamera",
+          "Class": "ACameraActor",
+          "Name": "TimeEffectsPresentationCamera",
+          "Components": [
+            {
+              "ObjectLabel": "CameraComponent",
+              "Class": "UCameraComponent",
+              "Name": "CameraComponent",
+              "Parent": "",
+              "Properties": {
+                "mFarClipPlane": 200.0,
+                "mNearClipPlane": 0.05,
+                "mFieldOfView": 58.0,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": -12.0,
+                    "Y": 0.0,
+                    "Z": 3.0
+                  },
+                  "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                  }
+                }
+              }
+            },
+            {
+              "ObjectLabel": "TimeEffectsPresentationController",
+              "Class": "UScriptComponent",
+              "Name": "TimeEffectsPresentationController",
+              "Parent": "",
+              "Properties": {
+                "ScriptPath": "Assets/Scripts/Samples/TimeEffectsPresentation.lua"
+              }
+            }
+          ],
+          "Properties": {},
+          "RootComponent": "CameraComponent"
+        },
+        {
+          "ObjectLabel": "TimeDemoFillLight",
+          "Class": "ASkyLightActor",
+          "Name": "TimeDemoFillLight",
+          "Components": [
+            {
+              "ObjectLabel": "USkyLightComponent",
+              "Class": "USkyLightComponent",
+              "Name": "USkyLightComponent",
+              "Parent": "",
+              "Properties": {
+                "bVisible": true,
+                "LightColor": 4294967295,
+                "Intensity": 0.72,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 3.0,
+                    "Y": 0.0,
+                    "Z": 8.0
+                  },
+                  "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                  }
+                }
+              }
+            }
+          ],
+          "Properties": {},
+          "RootComponent": "USkyLightComponent"
+        },
+        {
+          "ObjectLabel": "TimeDemoKeyLight",
+          "Class": "ADirectionalLightActor",
+          "Name": "TimeDemoKeyLight",
+          "Components": [
+            {
+              "ObjectLabel": "UDirectionalLightComponent",
+              "Class": "UDirectionalLightComponent",
+              "Name": "UDirectionalLightComponent",
+              "Parent": "",
+              "Properties": {
+                "bVisible": true,
+                "LightColor": 4294967295,
+                "bCastShadows": false,
+                "Intensity": 2.4,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 48.0,
+                    "Yaw": -32.0
+                  },
+                  "Location": {
+                    "X": -2.0,
+                    "Y": -4.0,
+                    "Z": 10.0
+                  },
+                  "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                  }
+                }
+              }
+            }
+          ],
+          "Properties": {},
+          "RootComponent": "UDirectionalLightComponent"
+        },
+        {
+          "ObjectLabel": "TimeDemoStage",
+          "Class": "AActor",
+          "Name": "TimeDemoStage",
+          "Components": [
+            {
+              "ObjectLabel": "DefaultSceneRoot",
+              "Class": "USceneComponent",
+              "Name": "DefaultSceneRoot",
+              "Parent": "",
+              "Properties": {
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                  },
+                  "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                  }
+                }
+              }
+            },
+            {
+              "ObjectLabel": "StageFloor",
+              "Class": "UStaticMeshComponent",
+              "Name": "StageFloor",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 5.0,
+                    "Y": 0.0,
+                    "Z": -0.25
+                  },
+                  "Scale": {
+                    "X": 34.0,
+                    "Y": 20.0,
+                    "Z": 0.5
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.035,
+                      "Y": 0.045,
+                      "Z": 0.075,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 12.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "Backdrop",
+              "Class": "UStaticMeshComponent",
+              "Name": "Backdrop",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 14.0,
+                    "Y": 0.0,
+                    "Z": 4.0
+                  },
+                  "Scale": {
+                    "X": 0.35,
+                    "Y": 20.0,
+                    "Z": 8.0
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.055,
+                      "Y": 0.08,
+                      "Z": 0.14,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 18.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "TopAccent",
+              "Class": "UStaticMeshComponent",
+              "Name": "TopAccent",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 13.55,
+                    "Y": 0.0,
+                    "Z": 6.4
+                  },
+                  "Scale": {
+                    "X": 0.18,
+                    "Y": 14.0,
+                    "Z": 0.12
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.12,
+                      "Y": 0.7,
+                      "Z": 0.95,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 64.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "LeftPedestal",
+              "Class": "UStaticMeshComponent",
+              "Name": "LeftPedestal",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 5.0,
+                    "Y": -4.0,
+                    "Z": 0.35
+                  },
+                  "Scale": {
+                    "X": 2.2,
+                    "Y": 2.2,
+                    "Z": 0.7
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.06,
+                      "Y": 0.32,
+                      "Z": 0.42,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 32.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "CenterPedestal",
+              "Class": "UStaticMeshComponent",
+              "Name": "CenterPedestal",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 5.0,
+                    "Y": 0.0,
+                    "Z": 0.45
+                  },
+                  "Scale": {
+                    "X": 2.5,
+                    "Y": 2.5,
+                    "Z": 0.9
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.48,
+                      "Y": 0.19,
+                      "Z": 0.045,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 32.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "RightPedestal",
+              "Class": "UStaticMeshComponent",
+              "Name": "RightPedestal",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 5.0,
+                    "Y": 4.0,
+                    "Z": 0.35
+                  },
+                  "Scale": {
+                    "X": 2.2,
+                    "Y": 2.2,
+                    "Z": 0.7
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.4,
+                      "Y": 0.07,
+                      "Z": 0.32,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 32.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            }
+          ],
+          "Properties": {},
+          "RootComponent": "DefaultSceneRoot"
+        },
+        {
+          "ObjectLabel": "TimeDemoSpinnerLeft",
+          "Class": "AActor",
+          "Name": "TimeDemoSpinnerLeft",
+          "Components": [
+            {
+              "ObjectLabel": "DefaultSceneRoot",
+              "Class": "USceneComponent",
+              "Name": "DefaultSceneRoot",
+              "Parent": "",
+              "Properties": {
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 5.0,
+                    "Y": -4.0,
+                    "Z": 2.55
+                  },
+                  "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                  }
+                }
+              }
+            },
+            {
+              "ObjectLabel": "HorizontalBlade",
+              "Class": "UStaticMeshComponent",
+              "Name": "HorizontalBlade",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                  },
+                  "Scale": {
+                    "X": 0.45,
+                    "Y": 2.6,
+                    "Z": 0.26
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.05,
+                      "Y": 0.82,
+                      "Z": 0.95,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 96.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "VerticalBlade",
+              "Class": "UStaticMeshComponent",
+              "Name": "VerticalBlade",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                  },
+                  "Scale": {
+                    "X": 0.45,
+                    "Y": 0.26,
+                    "Z": 2.6
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.05,
+                      "Y": 0.82,
+                      "Z": 0.95,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 96.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "TimeDemoMover",
+              "Class": "UScriptComponent",
+              "Name": "TimeDemoMover",
+              "Parent": "",
+              "Properties": {
+                "ScriptPath": "Assets/Scripts/Samples/TimeEffectsPresentationMover.lua"
+              }
+            }
+          ],
+          "Properties": {},
+          "RootComponent": "DefaultSceneRoot"
+        },
+        {
+          "ObjectLabel": "TimeDemoSpinnerCenter",
+          "Class": "AActor",
+          "Name": "TimeDemoSpinnerCenter",
+          "Components": [
+            {
+              "ObjectLabel": "DefaultSceneRoot",
+              "Class": "USceneComponent",
+              "Name": "DefaultSceneRoot",
+              "Parent": "",
+              "Properties": {
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 5.0,
+                    "Y": 0.0,
+                    "Z": 2.8
+                  },
+                  "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                  }
+                }
+              }
+            },
+            {
+              "ObjectLabel": "HorizontalBlade",
+              "Class": "UStaticMeshComponent",
+              "Name": "HorizontalBlade",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                  },
+                  "Scale": {
+                    "X": 0.55,
+                    "Y": 3.0,
+                    "Z": 0.3
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 1.0,
+                      "Y": 0.38,
+                      "Z": 0.06,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 96.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "VerticalBlade",
+              "Class": "UStaticMeshComponent",
+              "Name": "VerticalBlade",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                  },
+                  "Scale": {
+                    "X": 0.55,
+                    "Y": 0.3,
+                    "Z": 3.0
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 1.0,
+                      "Y": 0.38,
+                      "Z": 0.06,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 96.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "TimeDemoMover",
+              "Class": "UScriptComponent",
+              "Name": "TimeDemoMover",
+              "Parent": "",
+              "Properties": {
+                "ScriptPath": "Assets/Scripts/Samples/TimeEffectsPresentationMover.lua"
+              }
+            }
+          ],
+          "Properties": {},
+          "RootComponent": "DefaultSceneRoot"
+        },
+        {
+          "ObjectLabel": "TimeDemoSpinnerRight",
+          "Class": "AActor",
+          "Name": "TimeDemoSpinnerRight",
+          "Components": [
+            {
+              "ObjectLabel": "DefaultSceneRoot",
+              "Class": "USceneComponent",
+              "Name": "DefaultSceneRoot",
+              "Parent": "",
+              "Properties": {
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 5.0,
+                    "Y": 4.0,
+                    "Z": 2.55
+                  },
+                  "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                  }
+                }
+              }
+            },
+            {
+              "ObjectLabel": "HorizontalBlade",
+              "Class": "UStaticMeshComponent",
+              "Name": "HorizontalBlade",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                  },
+                  "Scale": {
+                    "X": 0.45,
+                    "Y": 2.6,
+                    "Z": 0.26
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.92,
+                      "Y": 0.08,
+                      "Z": 0.72,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 96.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "VerticalBlade",
+              "Class": "UStaticMeshComponent",
+              "Name": "VerticalBlade",
+              "Parent": "DefaultSceneRoot",
+              "Properties": {
+                "bVisible": true,
+                "StaticMesh": "Cube",
+                "bReceiveShadow": false,
+                "bCastShadow": false,
+                "Transform": {
+                  "Rotation": {
+                    "Roll": 0.0,
+                    "Pitch": 0.0,
+                    "Yaw": 0.0
+                  },
+                  "Location": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                  },
+                  "Scale": {
+                    "X": 0.45,
+                    "Y": 0.26,
+                    "Z": 2.6
+                  }
+                }
+              },
+              "OverrideMaterials": [
+                {
+                  "Base": "DefaultMaterial",
+                  "Instance": {
+                    "ObjectLabel": "",
+                    "UVScrollSpeed": [0.0, 0.0],
+                    "BaseColor": {
+                      "X": 0.92,
+                      "Y": 0.08,
+                      "Z": 0.72,
+                      "W": 1.0
+                    },
+                    "Properties": {},
+                    "SamplerState": "LinearWrap",
+                    "Shininess": 96.0,
+                    "Textures": [],
+                    "BlendState": "Opaque"
+                  }
+                }
+              ]
+            },
+            {
+              "ObjectLabel": "TimeDemoMover",
+              "Class": "UScriptComponent",
+              "Name": "TimeDemoMover",
+              "Parent": "",
+              "Properties": {
+                "ScriptPath": "Assets/Scripts/Samples/TimeEffectsPresentationMover.lua"
+              }
+            }
+          ],
+          "Properties": {},
+          "RootComponent": "DefaultSceneRoot"
+        }
+      ],
+      "Properties": {}
+    },
+    "Properties": {}
+  }
+}

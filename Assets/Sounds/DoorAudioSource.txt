@@ -1,0 +1,21 @@
+DoorOpen.wav
+
+Source: metal_door_open.wav
+Author: Krokulator
+Published: 2023-03-20
+Source page: https://freesound.org/people/Krokulator/sounds/679460/
+License: Creative Commons CC0 1.0 Universal
+License URL: https://creativecommons.org/publicdomain/zero/1.0/
+Recording: A metal door opening, recorded by phone.
+Edits: 0.16-1.36 seconds of the decoded preview, DC removal, level adjustment, endpoint fades, mono 44100 Hz 16-bit PCM. Duration: 1.2 seconds.
+
+DoorClose.wav
+
+Source: metal_door_close.wav
+Author: Krokulator
+Published: 2023-03-20
+Source page: https://freesound.org/people/Krokulator/sounds/679461/
+License: Creative Commons CC0 1.0 Universal
+License URL: https://creativecommons.org/publicdomain/zero/1.0/
+Recording: A separate recording of a metal door closing with a thud.
+Edits: Closing creak at 0.90-1.855 seconds followed by latch impact at 1.90-2.05 seconds, joined with a 5 ms crossfade. DC removal, level adjustment, endpoint fades, mono 44100 Hz 16-bit PCM. Duration: 1.1 seconds.

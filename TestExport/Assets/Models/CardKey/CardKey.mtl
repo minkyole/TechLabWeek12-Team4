@@ -1,0 +1,47 @@
+# MTL file - created by a modified js OBJExporter
+
+newmtl Metal
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pm 1
+Pr 0.9178828632
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0.864824582 0.864824582 0.864824582
+Ke 0 0 0
+
+newmtl Hologram
+Tr 0.5
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 0.5592606707000001
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0.0159139 0.8 0.8
+Ke 0.02647262709669643 1 1
+
+newmtl Button
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pm 0.1480564024
+Pr 0.8598738933
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0.3417455924 0.3417455924 0.3417455924
+Ke 0 0 0
+
+newmtl Light
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 0.8263208313
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0 1 0.852034
+Ke 0 1 1

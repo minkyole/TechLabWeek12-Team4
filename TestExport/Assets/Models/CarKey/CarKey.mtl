@@ -1,0 +1,66 @@
+# MTL file - created by a modified js OBJExporter
+
+newmtl body
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pm 1
+Pr 1
+Pds 1
+Pl 1
+Pccns 11
+Prfl 0.5
+Pior 1.5
+Pshc 0 0 0
+Pshr 1
+Psi 0.3366031929217157
+Psc 1 1 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 0 0 0
+map_Kd CarKey_Body_BaseColor.png
+map_Pm CarKey_Body_Metallic.png
+map_Pr CarKey_Body_Metallic.png
+norm CarKey_Body_Normal.png
+map_Ka CarKey_Body_Metallic.png
+
+newmtl silver
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pm 1
+Pr 1
+Pds 1
+Pl 1
+Pccns 11
+Prfl 0.5
+Pior 1.5
+Pshc 0 0 0
+Pshr 1
+Psi 0.3249459394871974
+Psc 1 1 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 0 0 0
+map_Kd CarKey_Silver_BaseColor.png
+map_Pm CarKey_Silver_Metallic.png
+map_Pr CarKey_Silver_Metallic.png
+norm CarKey_Silver_Normal.png
+map_Ka CarKey_Silver_Metallic.png
+
+newmtl silver_top
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pm 1
+Pr 1
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 0 0 0
+map_Kd CarKey_SilverTop_BaseColor.png
+map_Pm CarKey_SilverTop_Metallic.png
+map_Pr CarKey_SilverTop_Metallic.png
+norm CarKey_SilverTop_Normal.png
+map_Ka CarKey_SilverTop_Metallic.png

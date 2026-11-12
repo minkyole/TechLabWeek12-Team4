@@ -1,0 +1,16 @@
+Generator: built-in image_gen
+Asset: Sky.hdr
+Preview: NightSky.png
+Generated source resolution: 1774x887
+Final resolution: 4096x2048, matching the previous Sky.hdr
+Processing: Lanczos3 resize; IEC 61966-2-1 sRGB-to-linear conversion; Radiance RGBE encoding
+Runtime path: Resources/SkySphere/Sky.hdr
+Export runtime path: TestExport/Resources/SkySphere/Sky.hdr
+
+Use case: photorealistic-natural.
+Asset type: production horror game sky dome texture, full-sphere 360 degree by 180 degree equirectangular environment panorama, 2:1 aspect ratio, exact final resolution 4096x2048 pixels to match the existing game sky texture.
+Primary request: an eerie, desolate nighttime sky for an abandoned industrial facility horror game.
+Scene/backdrop: ONLY sky and atmospheric haze, a realistic cold moonlit overcast night. Long uneven banks of dark storm clouds, softly layered ragged wisps, subtle volumetric depth, a restrained faint diffuse moon glow behind dense cloud rather than a bright visible disc. Muted desaturated slate blue, charcoal and a little cold blue-gray. Deep navy near zenith, very dim gray-blue atmospheric haze at the horizon, almost black blue-gray lower hemisphere.
+Composition/framing: technical latitude-longitude environment map, 360 degrees horizontally with absolutely seamless left/right wrap, zenith at top edge, horizon exactly at the vertical midpoint, nadir at bottom edge. Cloud features belong primarily in upper hemisphere, very distant dim haze around the whole equator, simple unobtrusive dark atmospheric continuation below the horizon. Natural equirectangular pole distortion, constant smooth pole colors. Readable subtle clouds in darkness, credible scale when viewed from inside a sphere, high detailed natural cloud texture, no vignette or central poster composition.
+Lighting/mood: foreboding, lonely, chilling and unsettling, low illumination, no bright daytime cloud highlights, no sun, no warm sunset, no saturated cyan, no purple fantasy colors.
+Constraints: sky-only map, no ground, no ocean, no mountains, no terrain silhouette, no trees, no city, no buildings, no people, no creatures, no aircraft, no frame, no text, no logos, no starscape or galaxies, no lightning. The full rectangular image is the usable sky texture. Seamless horizontal wrap, no straight visible seam. Generate at 4096x2048 if supported.

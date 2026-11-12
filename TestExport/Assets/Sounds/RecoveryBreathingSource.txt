@@ -1,0 +1,12 @@
+RecoveryBreathing.wav
+
+Source: Breathless Man, sound number 1103
+Author: Joseph SARDIN / BigSoundBank
+Source page: https://bigsoundbank.com/breathless-man-s1103.html
+Downloaded audio: https://bigsoundbank.com/UPLOAD/mp3/1103.mp3
+License: CC0 1.0 / public domain
+License information: https://bigsoundbank.com/licenses.html
+Downloaded MP3 SHA-256: 29df461e8fb60f26f5a6e27d89cd17130deb19c5c88c960b706df4e58f9c2ae9
+Recording: A real man out of breath after sports exercises. The author describes the recording as loopable.
+Edits: MP3 decoded to mono 48000 Hz 16-bit PCM, DC removal, peak normalization to 0.88, 15 ms endpoint fades. Original timing and voice preserved. Duration: 23.943 seconds.
+Preparation: python Tools/BuildBreathingSound.py path/to/decoded-source.wav (mono 16-bit PCM).
