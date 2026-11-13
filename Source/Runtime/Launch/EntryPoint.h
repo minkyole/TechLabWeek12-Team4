@@ -13,9 +13,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	FEngineLoop EngineLoop;
 	FWindowCrashHandler::Install();
 
-	volatile int* P = nullptr; // 테스트 후 삭제
-	*P = 0;
-
 	if (!EngineLoop.PreInit(hInstance, GetEngineClass()))
 	{
 		// 실패 전까지 만든 GPU 자원·UObject를 정리하고 끝낸다.
