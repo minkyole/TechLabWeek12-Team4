@@ -3,6 +3,7 @@
 #include "EnginePCH.h"
 #include <Windows.h>
 #include "LaunchEngineLoop.h"
+#include "Runtime/WindowCrashHandler.h"
 
 // 실행 파일이 어떤 엔진 모드(UEngine 서브클래스)로 돌지 정한다. UE의 ini GameEngine= 설정 역할.
 extern UClass* GetEngineClass();
@@ -10,6 +11,11 @@ extern UClass* GetEngineClass();
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	FEngineLoop EngineLoop;
+	FWindowCrashHandler::Install();
+
+	volatile int* P = nullptr; // 테스트 후 삭제
+	*P = 0;
+
 	if (!EngineLoop.PreInit(hInstance, GetEngineClass()))
 	{
 		// 실패 전까지 만든 GPU 자원·UObject를 정리하고 끝낸다.
