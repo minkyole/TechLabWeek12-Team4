@@ -8,6 +8,7 @@
 
 #include <cassert>
 #include <utility>
+#include <algorithm>
 
 FSpriteParticleSceneProxy::FSpriteParticleSceneProxy(
     USpriteParticleTestComponent* Component)
@@ -21,9 +22,6 @@ void FSpriteParticleSceneProxy::UpdateDynamicData()
 	    static_cast<const USpriteParticleTestComponent*>(
 	        GetComponent());
 
-	QuadMesh =
-	    UAssetManager::GetAssetByPath<UStaticMesh>("ParticleQuad");
-
 	DynamicData = MakeUnique<FDynamicSpriteEmitterData>(
 	    Component->BuildReplayData());
 	
@@ -32,12 +30,11 @@ void FSpriteParticleSceneProxy::UpdateDynamicData()
 	// 이번 단계에서 지원하는 실제 재질 타입은 UMaterial이다.
 	Material = Cast<UMaterial>(Source.MaterialInterface);
 
-	assert(QuadMesh);
 	assert(Material);
 	assert(!Source.bUseLocalSpace);
+	assert(Source.ActiveParticleCount >= 0);
 
-	// 주소를 패킷에 전달하기 전에 크기를 확정한다.
-	ParticleParams.SetNum(Source.ActiveParticleCount);
+	Instances.SetNum(Source.ActiveParticleCount);
 
 	for (int32 ActiveIndex = 0;
 		ActiveIndex < Source.ActiveParticleCount;
@@ -46,25 +43,25 @@ void FSpriteParticleSceneProxy::UpdateDynamicData()
 		const FBaseParticle& Particle =
 		    Source.GetParticle(ActiveIndex);
 
-		FSubUVConstants Params{};
+		FParticleSpriteInstanceVertex Instance{};
 
-		// Atlas 전체를 하나의 Sprite로 사용한다.
-		Params.CurrentFrame = 0.0f;
-		Params.AtlasRowSize = 1.0f;
-		Params.AtlasColSize = 1.0f;
+		Instance.Position = Particle.Location;
+		Instance.Rotation = Particle.Rotation;
 
-		Params.Alpha = Particle.Color.A;
-		Params.Tint = FVector4(
+		Instance.Size = FVector2(
+		    Particle.Size.X * Source.Scale.X,
+		    Particle.Size.Y * Source.Scale.Y);
+
+		Instance.Color = FVector4(
 		    Particle.Color.R,
 		    Particle.Color.G,
 		    Particle.Color.B,
-		    1.0f);
+		    Particle.Color.A);
 
-		// 입력 색은 FLinearColor이고 텍스처는 흰색이다.
-		// 기존 셰이더의 Tint sRGB 변환을 사용하지 않는다.
-		Params.DecodeSRGB = 0.0f;
+		// 전체 텍스처를 사용.
+		Instance.UVRect = FVector4(0.0f, 0.0f, 1.0f, 1.0f);
 
-		ParticleParams[ActiveIndex] = Params;
+		Instances[ActiveIndex] = std::move(Instance);
 	}
 }
 
@@ -72,59 +69,54 @@ bool FSpriteParticleSceneProxy::GatherDynamicRenderPackets(
     FRenderQueue& RenderQueue,
     FRenderQueue*,
     const FVector& CameraLocation,
-    FBillboardMatrixBuilder BuildBillboardMatrix,
-    const void* ViewContext,
+    FBillboardMatrixBuilder,
+    const void*,
     TArray<int32>&,
     TArray<float>&) const
 {
-	if (!DynamicData || !QuadMesh || !Material)
+	if (!DynamicData || !Material || Instances.Num() == 0)
 		return true;
 
-	if (!BuildBillboardMatrix)
-		return true;
+	// AlphaBlend/ Additive Sprite를 대상으로 한다.
+	assert(
+	    Material->BlendState == EBlendState::AlphaBlend ||
+	    Material->BlendState == EBlendState::Additive);
 
-	const auto& Source = DynamicData->GetSource();
+	FRenderPacket Packet{};
 
-	assert(!Source.bUseLocalSpace);
-	assert(ParticleParams.Num() == Source.ActiveParticleCount);
+	Packet.Material = Material;
 
-	for (int32 ActiveIndex = 0;
-		ActiveIndex < Source.ActiveParticleCount;
-		++ActiveIndex)
+	// 뷰별 정렬을 위해 패킷이 독립적인 배열을 소유한다.
+	Packet.SpriteInstances = Instances;
+
+	if (Material->BlendState == EBlendState::AlphaBlend)
 	{
-		const FBaseParticle& Particle =
-		    Source.GetParticle(ActiveIndex);
-
-		const FVector WorldPosition = Particle.Location;
-
-		const float Width = Particle.Size.X * Source.Scale.X;
-		const float Height = Particle.Size.Y * Source.Scale.Y;
-
-		const FMatrix WorldMatrix = BuildBillboardMatrix(
-		    WorldPosition,
-		    Width,
-		    Height,
-		    ViewContext);
-
-		FRenderPacket Packet;
-
-		Packet.Mesh = QuadMesh;
-		Packet.Material = Material;
-
-		Packet.Model =
-		    RenderQueue.StoreWorldMatrix(WorldMatrix);
-
-		Packet.CameraToParticleDistance =
-		    (WorldPosition - CameraLocation).SizeSquared();
-
-		Packet.MaterialParamData =
-		    &ParticleParams[ActiveIndex];
-
-		Packet.MaterialParamDataSize =
-		    static_cast<uint32>(sizeof(FSubUVConstants));
-
-		RenderQueue.Add(Packet);
+		std::stable_sort(
+		    Packet.SpriteInstances.begin(),
+		    Packet.SpriteInstances.end(),
+		    [&CameraLocation](
+		        const FParticleSpriteInstanceVertex& A,
+		        const FParticleSpriteInstanceVertex& B)
+		    {
+			    return (A.Position - CameraLocation).SizeSquared() >
+			           (B.Position - CameraLocation).SizeSquared();
+		    });
 	}
+
+	FVector Center = FVector::ZeroVector;
+
+	for (const FParticleSpriteInstanceVertex& Instance :
+		Packet.SpriteInstances)
+	{
+		Center += Instance.Position;
+	}
+
+	Center *= 1.0f / static_cast<float>(Packet.SpriteInstances.Num());
+
+	Packet.CameraToParticleDistance = (Center - CameraLocation).SizeSquared();
+
+	// 배열을 포함한 패킷을 이동한다.
+	RenderQueue.Add(std::move(Packet));
 
 	return true;
 }

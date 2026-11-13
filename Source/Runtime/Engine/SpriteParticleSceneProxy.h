@@ -3,6 +3,7 @@
 #include "Engine/PrimitiveSceneProxy.h"
 #include "Components/BillboardComponent.h"
 #include "Particles/ParticleRenderData.h"
+#include "Particles/ParticleVertex.h"
 
 class USpriteParticleTestComponent;
 
@@ -25,11 +26,9 @@ protected:
 	void UpdateDynamicData() override;
 
 private:
-	UStaticMesh* QuadMesh = nullptr;
 	UMaterial* Material = nullptr;
 	
 	TUniquePtr<FDynamicSpriteEmitterData> DynamicData;
 
-	// 패킷에 실제 Draw될 때까지 주소가 유지되어야 한다.
-	TArray<FSubUVConstants> ParticleParams;
+	TArray<FParticleSpriteInstanceVertex> Instances;
 };
