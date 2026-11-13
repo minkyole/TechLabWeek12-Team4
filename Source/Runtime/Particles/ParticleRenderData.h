@@ -31,7 +31,7 @@ struct FDynamicSpriteEmitterDataBase : public FDynamicEmitterDataBase
 	    const FVector& CameraLocation,
 	    const FVector& CameraForward,
 	    const FMatrix& LocalToWorld,
-	    TArray<FParticleOrder>& OutParticleOrder) const;
+	    TArray<FParticleOrder>* OutParticleOrder) const;
 
 	virtual int32 GetDynamicVertexStride() const = 0;
 };

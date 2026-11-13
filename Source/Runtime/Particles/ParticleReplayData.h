@@ -10,7 +10,7 @@ class UStaticMesh;
 struct FParticleDataContainer
 {
 public:
-	FParticleDataContainer();
+	FParticleDataContainer() = default;
 	~FParticleDataContainer();
 
 	FParticleDataContainer(const FParticleDataContainer&) = delete;
