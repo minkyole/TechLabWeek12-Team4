@@ -54,6 +54,6 @@ struct FBaseParticle
 	float BaseRotationRate;
 	FVector BaseSize;
 	int32 Flags;
-	FLinearColor Color;
-	FLinearColor BaseColor;
+	FLinearColor Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+	FLinearColor BaseColor{ 1.0f, 1.0f, 1.0f, 1.0f };
 };

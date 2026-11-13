@@ -1,7 +1,8 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "Components/ParticleSubUVComponent.h"
+//#include "Components/ParticleSubUVComponent.h"
+#include "Components/SpriteParticleTestComponent.h"
 
 // Todo: subuv
 class AParticleActor : public AActor
@@ -16,5 +17,5 @@ public:
 	//UParticleSubUVComponent* GetParticleComponent() const;
 
 private:
-	UParticleSubUVComponent* ParticleComponent;
+	USpriteParticleTestComponent* ParticleComponent;
 };
