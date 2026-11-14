@@ -1,5 +1,6 @@
 #include "EnginePCH.h"
 #include "ParticleSystemComponent.h"
+#include "Engine/ParticleSystemSceneProxy.h"
 
 UParticleSystemComponent::UParticleSystemComponent()
 {
@@ -32,4 +33,9 @@ void UParticleSystemComponent::TickComponent(float DeltaTime)
 		EmitterInstance->Tick(DeltaTime);
 	}
 
+}
+
+FPrimitiveSceneProxy* UParticleSystemComponent::CreateSceneProxy()
+{
+	return new FParticleSystemSceneProxy(this);
 }

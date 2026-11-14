@@ -12,6 +12,7 @@ public:
 	UParticleSystemComponent();
 	~UParticleSystemComponent();
 	virtual void TickComponent(float DeltaTime) override;
+	FPrimitiveSceneProxy* CreateSceneProxy() override;
 
 	TArray<FParticleEmitterInstance*> EmitterInstances;
 	//UParticleSystem* Template;
