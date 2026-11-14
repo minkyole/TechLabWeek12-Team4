@@ -18,6 +18,7 @@
 #include "Render/FShadowViewRenderer.h"
 #include "Render/UIRenderer.h"
 #include "Render/DecalRenderer.h"
+#include "Render/ParticleSpriteRenderer.h"
 
 
 #include "Editor/EditorUI/EditorUI.h"
@@ -169,6 +170,7 @@ private:
 	TUniquePtr<FDepthViewRenderer> DepthViewRenderer;
 	TUniquePtr<FShadowViewRenderer> ShadowViewRenderer;
 	TUniquePtr<FUIRenderer> UIRenderer;
+	TUniquePtr<FParticleSpriteRenderer> ParticleSpriteRenderer;
 
 	UFont* SystemFont;
 

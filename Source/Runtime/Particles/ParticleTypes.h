@@ -16,6 +16,27 @@ enum class EParticleSortMode : uint8
 	ViewDepth,
 };
 
+// 스프라이트 판이 카메라에 대해 어떤 방향을 갖는지.
+
+enum class EParticleScreenAlignment : uint8
+{
+	FacingCameraPosition, // 카메라 위치를 향한다. (카메라가 가까이 붙으면 뒤집히는 현상 발생)
+	Square,               // 카메라 평면에 직교하는 정사각형. SizeX를 가로 세로 동일하게 사용
+	Rectangle,            // 카메라 평면에 직교하는 직사각형. SizeX, SizeY를 그대로 사용
+	Velocity,             // 카메라를 향하면서 이동방향에 맞춰 축을 정렬
+	// TypeSpecific,
+	// FacingCameraDistanceBlend, // 카메라 위치를 향하지만 일정 거리 이상이면 정사각형으로 바뀐다.
+};
+
+// AxisLock에서 고정할 월드 축.
+enum class EParticleAxisLock : uint8
+{
+	None,
+	X,
+	Y,
+	Z,
+};
+
 enum EParticleStates
 {
 	/** Ignore updates to the particle						*/
@@ -54,6 +75,6 @@ struct FBaseParticle
 	float BaseRotationRate;
 	FVector BaseSize;
 	int32 Flags;
-	FLinearColor Color;
-	FLinearColor BaseColor;
+	FLinearColor Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+	FLinearColor BaseColor{ 1.0f, 1.0f, 1.0f, 1.0f };
 };

@@ -68,7 +68,7 @@ public:
 	void DetachFromComponent(EAttachmentRule Rule = EAttachmentRule::KeepRelative);
 
 	virtual FBox CalcLocalBounds() const { return FBox{ FVector(), FVector() }; }
-	FBox CalcBounds() const { return CalcLocalBounds().GetWorldAABB(GetWorldMatrix()); }
+	virtual FBox CalcBounds() const { return CalcLocalBounds().GetWorldAABB(GetWorldMatrix()); }
 
 	FVector GetWorldLocation() const;
 	FRotator GetWorldRotation() const;

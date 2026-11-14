@@ -10,7 +10,7 @@ class UStaticMesh;
 struct FParticleDataContainer
 {
 public:
-	FParticleDataContainer();
+	FParticleDataContainer() = default;
 	~FParticleDataContainer();
 
 	FParticleDataContainer(const FParticleDataContainer&) = delete;
@@ -88,7 +88,10 @@ struct FDynamicSpriteEmitterReplayDataBase
 	bool bUseLocalSpace = false;
 
 	// Billboard 방식등...
-	// TODO
+	EParticleScreenAlignment ScreenAlignment =
+	    EParticleScreenAlignment::Rectangle;
+
+	EParticleAxisLock AxisLock = EParticleAxisLock::None;
 };
 
 struct FDynamicSpriteEmitterReplayData

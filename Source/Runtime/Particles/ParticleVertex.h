@@ -23,6 +23,9 @@ struct alignas(16) FParticleSpriteInstanceVertex
 
 	// xy: UV 시작점, zw: UV 범위
 	FVector4 UVRect;
+
+	FVector Velocity;
+	float VelocityPadding = 0.0f;
 };
 
 // Mesh 파티클마다 달라지는 데이터
