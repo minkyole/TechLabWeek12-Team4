@@ -63,6 +63,7 @@ public:
 
 	ID3D11VertexShader* GetShader() const { return VertexShader.Get(); }
 	ID3D11InputLayout* GetLayout() const { return InputLayout.Get(); }
+	const FShaderByteCode& GetByteCode() const { return CachedByteCode; }
 
 	virtual bool IsValid() const { return VertexShader != nullptr; }
 
@@ -71,6 +72,7 @@ private:
 
 	ComPtr<ID3D11VertexShader> VertexShader = nullptr;
 	ComPtr<ID3D11InputLayout> InputLayout = nullptr;
+	FShaderByteCode CachedByteCode;
 };
 
 class FPixelShader : public FShader
