@@ -1,25 +1,35 @@
 #pragma once
 #include "ParticleTypes.h"
+#include "ParticleReplayData.h"
+#include "ParticleRenderData.h"
+#include "Math/Box.h"
+#include "Math/Matrix.h"
 
 class UParticleSystemComponent;
-class UParticleEmitter;// 임시
-class UParticleLODLevel;// 임시
-
+class UParticleEmitter;
+class UParticleLODLevel;
+class UParticleModuleTypeDataMesh;
+class UMaterialInterface;
 
 struct FParticleEmitterInstance
 {
-private:
+protected:
 	void PreSpawn(FBaseParticle* Particle, const FVector& InitialLocation, const FVector& InitialVelocity);
 	void PostSpawn(FBaseParticle* Particle, float InterpolationPercentage, float SpawnTime);
 
+	/** 모든 이미터 타입에 공통인 ReplayData 필드를 채운다. 파생 클래스의 override에서 먼저 호출 */
+	virtual bool FillReplayData(FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const;
 
+	UMaterialInterface* GetCurrentMaterial() const;
 
 public:
 	FParticleEmitterInstance() = default;
 	FParticleEmitterInstance(const FParticleEmitterInstance&) = delete;
 	FParticleEmitterInstance& operator= (const FParticleEmitterInstance&) = delete;
 
-	~FParticleEmitterInstance();
+	virtual ~FParticleEmitterInstance();
+	/** 이미터 타입에 맞는 DynamicEmitterData를 생성해 반환. 호출자가 delete 책임. 베이스는 nullptr */
+	virtual FDynamicEmitterDataBase* GetDynamicData() const;
 
 	void Spawn(float DeltaTime);
 	void SpawnParticles(int32 Count, float StartTime, float Increment, const FVector& InitialLocation,
@@ -34,6 +44,11 @@ public:
 	void ResetParticleParameters();
 	void IntegrateParticles(float DeltaTime);
 
+	void UpdateTransforms();
+
+	void UpdateBoundingBox();
+	const FBox& GetBoundingBox() const { return ParticleBoundingBox; }
+
 	//Asset
 	UParticleEmitter* SpriteTemplate = nullptr;
 
@@ -41,6 +56,13 @@ public:
 	UParticleSystemComponent* Component = nullptr;
 	int32 CurrentLODLevelIndex = 0;
 	UParticleLODLevel* CurrentLODLevel = nullptr;
+
+	UMaterialInterface* CurrentMaterial = nullptr; // TODO
+
+	// TODO: 에셋 연결 시 CurrentLODLevel->RequiredModule->bUseLocalSpace
+	bool bUseLocalSpace = false;
+	FMatrix EmitterToSimulation = FMatrix::Identity;
+	FMatrix SimulationToWorld = FMatrix::Identity;
 
 
 	//Particle
@@ -66,7 +88,29 @@ public:
 	int32 MaxActiveParticles = 0;
 	/** 스폰하고 남은 시간의 소수 부분 */
 	float SpawnFraction = 0.0f;
+	FBox ParticleBoundingBox{};
 
 
 
+};
+
+struct FParticleSpriteEmitterInstance : public FParticleEmitterInstance
+{
+public:
+	virtual FDynamicEmitterDataBase* GetDynamicData() const override;
+
+protected:
+	virtual bool FillReplayData(FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const override;
+};
+
+struct FParticleMeshEmitterInstance : public FParticleEmitterInstance
+{
+public:
+	virtual FDynamicEmitterDataBase* GetDynamicData() const override;
+
+	UParticleModuleTypeDataMesh* MeshTypeData = nullptr;
+	int32 MeshRotationOffset = InvalidPayloadOffset;
+
+protected:
+	virtual bool FillReplayData(FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const override;
 };

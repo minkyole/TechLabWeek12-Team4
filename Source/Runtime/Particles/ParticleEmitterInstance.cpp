@@ -2,6 +2,9 @@
 #include "ParticleEmitterInstance.h"
 #include "Core/HAL/UnrealMemory.h"
 #include "ParticleHelper.h"
+#include "Components/ParticleSystemComponent.h"
+#include "Asset/AssetManager.h"
+#include "Math/Transform.h"
 
 FParticleEmitterInstance::~FParticleEmitterInstance()
 {
@@ -9,12 +12,14 @@ FParticleEmitterInstance::~FParticleEmitterInstance()
 }
 
 void FParticleEmitterInstance::Tick(float DeltaTime)
-{ 
+{
+	UpdateTransforms();
 	AgeAndKillParticles(DeltaTime);
 	ResetParticleParameters();
 	Spawn(DeltaTime);
 	//(UpdateModules 자리)
 	IntegrateParticles(DeltaTime);
+	UpdateBoundingBox();
 }
 
 void FParticleEmitterInstance::AgeAndKillParticles(float DeltaTime)
@@ -66,14 +71,73 @@ void FParticleEmitterInstance::IntegrateParticles(float DeltaTime)
 	}
 }
 
+void FParticleEmitterInstance::UpdateBoundingBox()
+{
+	if (!Component || Component->bUseFixedRelativeBoundingBox || ActiveParticles <= 0)
+	{
+		return;
+	}
+
+	const FVector Scale = Component->GetWorldScale3D();
+	const FMatrix ComponentToWorld = Component->GetWorldMatrix();
+
+	FVector MinVal(FLT_MAX, FLT_MAX, FLT_MAX);
+	FVector MaxVal(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
+	for (int32 Index = 0; Index < ActiveParticles; Index++)
+	{
+		DECLARE_PARTICLE_PTR(Particle, ParticleData + ParticleStride * ParticleIndices[Index]);
+
+		const FVector Extent = (Particle->Size * Scale).GetAbs();
+		const float LocalMax = std::max({ Extent.X, Extent.Y, Extent.Z });
+		const FVector Position = bUseLocalSpace
+			? ComponentToWorld.TransformPosition(Particle->Location)
+			: Particle->Location;
+
+		MinVal.X = std::min(MinVal.X, Position.X - LocalMax);
+		MinVal.Y = std::min(MinVal.Y, Position.Y - LocalMax);
+		MinVal.Z = std::min(MinVal.Z, Position.Z - LocalMax);
+		MaxVal.X = std::max(MaxVal.X, Position.X + LocalMax);
+		MaxVal.Y = std::max(MaxVal.Y, Position.Y + LocalMax);
+		MaxVal.Z = std::max(MaxVal.Z, Position.Z + LocalMax);
+	}
+
+	ParticleBoundingBox = FBox{ MinVal, MaxVal };
+}
+
+void FParticleEmitterInstance::UpdateTransforms()
+{
+	if (!Component)
+	{
+		return;
+	}
+
+	const FMatrix ComponentToWorld =
+		FTransform(Component->GetWorldRotation(), Component->GetWorldLocation()).GetLocalMatrix();
+
+	// TODO: RequiredModule에 EmitterOrigin/EmitterRotation이 생기면 EmitterToComponent를 앞에 곱한다.
+	if (bUseLocalSpace)
+	{
+		EmitterToSimulation = FMatrix::Identity;
+		SimulationToWorld = ComponentToWorld;
+	}
+	else
+	{
+		EmitterToSimulation = ComponentToWorld;
+		SimulationToWorld = FMatrix::Identity;
+	}
+}
+
 
 void FParticleEmitterInstance::Spawn(float DeltaTime)
 {
 	// 임시값
 	float Rate = 25.0f;
-	FVector SpawnLocation = FVector(1.0f, 1.0f, 1.0f);
 	FVector SpawnVelocity = FVector(0.0f, 0.0f, 1.0f);
 	//
+
+	const FVector4 Origin = EmitterToSimulation.GetOrigin();
+	const FVector SpawnLocation(Origin.X, Origin.Y, Origin.Z);
 
 	if (Rate <= 0)
 	{
@@ -117,7 +181,8 @@ void FParticleEmitterInstance::PostSpawn(FBaseParticle* Particle,
 	Particle->Flags |= STATE_Particle_JustSpawned;
 }
 
-void FParticleEmitterInstance::SpawnParticles(int32 Count, float StartTime, float Increment, const FVector& InitialLocation, const FVector& InitialVelocity)
+void FParticleEmitterInstance::SpawnParticles(int32 Count, float StartTime, float Increment, 
+	const FVector& InitialLocation, const FVector& InitialVelocity)
 {
 	float SpawnTime;
 	float InterpolationPercentage = 1.0f;
@@ -205,4 +270,112 @@ void FParticleEmitterInstance::Release()
 		ParticleSize = 0;
 		ParticleStride = 0;
 	}
+}
+
+bool FParticleEmitterInstance::FillReplayData(
+	FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const
+{
+	if (!ParticleData || ActiveParticles <= 0 || !Component)
+	{
+		return false;
+	}
+	OutDynamicEmitterReplayDataBase.ActiveParticleCount = ActiveParticles;
+	OutDynamicEmitterReplayDataBase.ParticleStride = ParticleStride;
+	OutDynamicEmitterReplayDataBase.Scale = Component->GetWorldScale3D();
+	// OutDynamicEmitterReplayDataBase.SortMode =  TODO
+
+	OutDynamicEmitterReplayDataBase.DataContainer.CopyFrom(
+		ParticleData, 
+		MaxActiveParticles * ParticleStride, 
+		ParticleIndices, 
+		ActiveParticles
+	);
+
+	FDynamicSpriteEmitterReplayDataBase* SpriteReplayDataBase =
+		static_cast<FDynamicSpriteEmitterReplayDataBase*>(&OutDynamicEmitterReplayDataBase);
+	SpriteReplayDataBase->bUseLocalSpace = bUseLocalSpace;
+
+	return true;
+}
+
+UMaterialInterface* FParticleEmitterInstance::GetCurrentMaterial() const
+{
+	if (CurrentMaterial)
+	{
+		return CurrentMaterial;
+	}
+	return UAssetManager::GetAssetByPath<UMaterial>("DefaultParticleMaterial");
+}
+
+FDynamicEmitterDataBase* FParticleEmitterInstance::GetDynamicData() const
+{
+	return nullptr;
+}
+
+/*-----------------------------------------------------------------------------
+	FParticleSpriteEmitterInstance
+-----------------------------------------------------------------------------*/
+
+bool FParticleSpriteEmitterInstance::FillReplayData(
+	FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const
+{
+	if (!FParticleEmitterInstance::FillReplayData(OutDynamicEmitterReplayDataBase))
+	{
+		return false;
+	}
+
+	OutDynamicEmitterReplayDataBase.eEmitterType = EDynamicEmitterType::Sprite;
+
+	FDynamicSpriteEmitterReplayData* SpriteReplayData =
+		static_cast<FDynamicSpriteEmitterReplayData*>(&OutDynamicEmitterReplayDataBase);
+	SpriteReplayData->MaterialInterface = GetCurrentMaterial();
+
+	return true;
+}
+
+FDynamicEmitterDataBase* FParticleSpriteEmitterInstance::GetDynamicData() const
+{
+	FDynamicSpriteEmitterReplayData ReplayData;
+	if (!FillReplayData(ReplayData))
+	{
+		return nullptr;
+	}
+
+	return new FDynamicSpriteEmitterData(std::move(ReplayData));
+}
+
+/*-----------------------------------------------------------------------------
+	FParticleMeshEmitterInstance
+-----------------------------------------------------------------------------*/
+
+
+bool FParticleMeshEmitterInstance::FillReplayData(
+	FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const
+{
+	if (!FParticleEmitterInstance::FillReplayData(OutDynamicEmitterReplayDataBase))
+	{
+		return false;
+	}
+
+	OutDynamicEmitterReplayDataBase.eEmitterType = EDynamicEmitterType::Mesh;
+
+	 FDynamicMeshEmitterReplayData* MeshReplayData =
+	     static_cast<FDynamicMeshEmitterReplayData*>(&OutDynamicEmitterReplayDataBase);
+	 // TODO: B의 UParticleModuleTypeDataMesh가 생기면 해제
+	 //MeshReplayData->Mesh = MeshTypeData ? MeshTypeData->Mesh : nullptr;
+	 MeshReplayData->MeshRotationPayloadOffset  = MeshRotationOffset;
+	 MeshReplayData->MaterialInterface = nullptr;
+
+	return true;
+}
+
+FDynamicEmitterDataBase* FParticleMeshEmitterInstance::GetDynamicData() const
+{
+	FDynamicMeshEmitterReplayData ReplayData;
+	if (!FillReplayData(ReplayData))
+	{
+		return nullptr;
+	}
+
+	return new FDynamicMeshEmitterData(std::move(ReplayData));
 }

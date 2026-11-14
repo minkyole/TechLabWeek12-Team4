@@ -23,4 +23,5 @@ namespace ResourcePaths
 	constexpr const char* SkyLightIcon = "Resources/Icons/Sky.png";
 	constexpr const char* FogIcon = "Resources/Icons/Fog.png";
 	constexpr const char* DecalIcon = "Resources/Icons/Decal.png";
+	constexpr const char* ParticleIcon = "Resources/Icons/ParticleSystem.png";
 }

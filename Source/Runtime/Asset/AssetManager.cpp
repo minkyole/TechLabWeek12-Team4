@@ -290,6 +290,7 @@ void UAssetManager::Init(const FAssetLoadProgress& OnProgress)
 	Get().ScanAssets("Assets", OnProgress);
 	Get().CreateDefaultMeshes();
 	Get().CreateParticleMaterial();
+	Get().CreateDefaultParticleMaterial();
 	Get().CreateEditorArrowMaterial();
 }
 
@@ -484,6 +485,17 @@ void UAssetManager::CreateDefaultMaterial() {
 	DefaultMat->ParamLayout = EMaterialParamLayout::StaticMesh;
 	DefaultMat->ParamBuffer = RenderCommand::CreateConstantBuffer(sizeof(FStaticMeshMaterialParams));
 	RegisterAsset("DefaultMaterial", DefaultMat);
+}
+
+void UAssetManager::CreateDefaultParticleMaterial()
+{
+	UMaterial* DefaultParticleMat = UMaterial::CreateInstance(GetAssetByPath<UMaterial>("SubUVMaterial"));
+	DefaultParticleMat->Textures.Reset();
+	DefaultParticleMat->Textures.Add(GetAssetByPath<UTexture2D>("WhiteTexture"));
+	DefaultParticleMat->SetBlendState(EBlendState::AlphaBlend);
+	DefaultParticleMat->DepthStencilState = EDepthStencilState::ReadOnly;
+	DefaultParticleMat->SamplerState = ESamplerState::LinearClamp;
+	RegisterAsset("DefaultParticleMaterial", DefaultParticleMat);
 }
 
 void UAssetManager::CreateParticleMaterial()
