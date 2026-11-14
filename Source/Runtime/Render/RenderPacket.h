@@ -6,7 +6,6 @@
 
 #include <array>
 #include <utility>
-#include <memory>
 
 #include "Particles/ParticleVertex.h"
 

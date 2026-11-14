@@ -154,6 +154,9 @@ bool UEditorEngine::Init()
 	DecalRenderer = MakeUnique<FDecalRenderer>();
 	DecalRenderer->Init(Renderer);
 
+	ParticleSpriteRenderer = MakeUnique<FParticleSpriteRenderer>();
+	ParticleSpriteRenderer->Init();
+
 	FXAARenderer = MakeUnique<FFXAARenderer>();
 	FXAARenderer->Init();
 
@@ -997,6 +1000,17 @@ void UEditorEngine::RenderOpaquePass(int32 ViewIndex, const FRenderingInfo& View
 {
 	const FMatrix& ViewProjection = ViewConstants.ViewProjection;
 	const FVector& ViewCameraLocation = ViewConstants.CameraWorldPos;
+
+	// RenderQueueSorting() 전에 파티클 패킷을 분리한다.
+	TArray<FRenderPacket> ParticlePackets;
+
+	if (ParticleSpriteRenderer)
+	{
+		ParticleSpriteRenderer->CollectPackets(
+		    RenderQueue,
+		    ParticlePackets);
+	}
+
 	FRenderingInfo HDRInfo = ViewRenderingInfo;
 	HDRInfo.ColorRenderTargets[0].Texture = GetHDRTargetForView(ViewIndex);
 	RenderCommand::BeginRenderPass(HDRInfo);
@@ -1075,7 +1089,32 @@ void UEditorEngine::RenderOpaquePass(int32 ViewIndex, const FRenderingInfo& View
 		RenderCommand::SetRasterizerState(SceneRasterizerState);
 		RenderCommand::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		Renderer->RenderTranslucent(ViewProjection);
+
+		// Sprite 파티클.
+		if (ParticleSpriteRenderer &&
+			ParticlePackets.Num() > 0)
+		{
+			// 실제 뷰 카메라를 사용한다.
+			// PIE 카메라 Override도 포함한다.
+			const auto& Camera =
+			    MultipleViewportsAdapter.GetEffectiveCamera(ViewIndex);
+
+			const FVector CameraRight =
+			    Camera.Transform.Rotation.GetRightVector();
+
+			const FVector CameraUp =
+			    Camera.Transform.Rotation.GetUpVector();
+
+			ParticleSpriteRenderer->OnRender(
+			    ParticlePackets,
+			    ViewProjection,
+			    CameraRight,
+			    CameraUp);
+		}
+
 		RenderCommand::SetRasterizerState(ERasterizerState::SolidBack);
+		RenderCommand::SetBlendState(EBlendState::Opaque);
+		RenderCommand::SetDepthStencilState(EDepthStencilState::Default);
 	}
 
 
@@ -1601,6 +1640,7 @@ void UEditorEngine::PreExit()
 	// so its unique_ptr cannot delete an already-destroyed UObject later.
 	if (BlendSpaceEditorPanel) BlendSpaceEditorPanel->ReleaseResources();
 	ImGuiRenderer->Shutdown();
+	ParticleSpriteRenderer.reset();
 
 	Super::PreExit();
 }

@@ -556,8 +556,15 @@ void UWorld::GatherRenderPackets(FRenderQueue& RenderQueue, const FLODViewContex
 				// continue 없이 항상 여기까지 와서 새 패킷에 여유 칸을 배정한다.
 				for (uint32 p = FirstNew; p < RenderQueue.Num(); ++p)
 				{
-					if (!SlotDest || NextExtraSlot >= MaxSlots) break;
 					FRenderPacket& Packet = RenderQueue[p];
+
+					// Sprite는 인스턴스 데이터와 뷰 상수만 사용한다.
+					if (Packet.IsSpriteParticle())
+					{
+						continue;
+					}
+
+					if (!SlotDest || NextExtraSlot >= MaxSlots) break;
 					const FMatrix& Model = Packet.Proxy ? Packet.Proxy->GetLocalToWorld() : Packet.Model ? *Packet.Model : FMatrix::Identity;
 					const FMatrix WorldToLocal = Packet.Proxy ? Packet.Proxy->GetWorldToLocal() : Model.Inverse();
 					WritePerObjectConstants(SlotDest + size_t(NextExtraSlot) * ObjectSlotBytes,
