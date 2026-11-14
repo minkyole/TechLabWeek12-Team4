@@ -16,6 +16,13 @@ enum class EParticleSortMode : uint8
 	ViewDepth,
 };
 
+enum class EParticleBillboardMode : uint32
+{
+	ScreenAligned = 0,
+	FaceCameraPosition = 1,
+	WorldUpLocked = 2,
+};
+
 enum EParticleStates
 {
 	/** Ignore updates to the particle						*/

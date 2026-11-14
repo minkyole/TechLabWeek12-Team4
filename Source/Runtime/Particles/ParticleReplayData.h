@@ -88,7 +88,7 @@ struct FDynamicSpriteEmitterReplayDataBase
 	bool bUseLocalSpace = false;
 
 	// Billboard 방식등...
-	// TODO
+	EParticleBillboardMode BillboardMode = EParticleBillboardMode::ScreenAligned;
 };
 
 struct FDynamicSpriteEmitterReplayData

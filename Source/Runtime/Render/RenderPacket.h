@@ -26,6 +26,8 @@ struct FRenderPacket
     uint32 Slot = InvalidObjectSlot;
     uint8 LODIndex = 0;
     bool bOccludedByGpu = false;
+    EParticleBillboardMode ParticleBillboardMode =
+	    EParticleBillboardMode::ScreenAligned;
 
     // 스켈레탈 메시와 CPU 스키닝 결과는 StaticMesh 에셋 없이 버퍼를 직접 전달한다.
     FVertexBuffer* VertexBuffer = nullptr;
