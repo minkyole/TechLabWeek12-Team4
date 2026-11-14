@@ -6,7 +6,7 @@ class FWindowCrashHandler
 {
 public:
 	FWindowCrashHandler() = delete;
-	~FWindowCrashHandler();
+	~FWindowCrashHandler() = delete;
 
 	FWindowCrashHandler(const FWindowCrashHandler&) = delete;
 	FWindowCrashHandler& operator=(const FWindowCrashHandler&) = delete;
