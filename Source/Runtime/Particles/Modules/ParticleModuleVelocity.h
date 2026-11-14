@@ -10,5 +10,8 @@ class UParticleModuleVelocity : public UParticleModule
 public:
 	UParticleModuleVelocity() = default;
 
+	void Spawn(FParticleEmitterInstance& Owner, int32 PayloadOffset, float SpawnTime, FBaseParticle& Particle) override;
+	bool NeedsSpawn() const override { return true; }
+
 	FParticleVectorRange StartVelocity;
 };
