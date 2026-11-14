@@ -17,6 +17,7 @@ void FParticleEmitterInstance::Tick(float DeltaTime)
 	Spawn(DeltaTime);
 	//(UpdateModules 자리)
 	IntegrateParticles(DeltaTime);
+	UpdateBoundingBox();
 }
 
 void FParticleEmitterInstance::AgeAndKillParticles(float DeltaTime)
@@ -66,6 +67,38 @@ void FParticleEmitterInstance::IntegrateParticles(float DeltaTime)
 			Particle->Rotation += Particle->RotationRate * DeltaTime;
 		}
 	}
+}
+
+void FParticleEmitterInstance::UpdateBoundingBox()
+{
+	if (!Component || Component->bUseFixedRelativeBoundingBox || ActiveParticles <= 0)
+	{
+		return;
+	}
+
+	const FVector Scale = Component->GetWorldScale3D();
+	// TODO: bUseLocalSpace면 Location을 컴포넌트 월드 행렬로 변환한 위치로 계산
+
+	FVector MinVal(FLT_MAX, FLT_MAX, FLT_MAX);
+	FVector MaxVal(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
+	for (int32 Index = 0; Index < ActiveParticles; Index++)
+	{
+		DECLARE_PARTICLE_PTR(Particle, ParticleData + ParticleStride * ParticleIndices[Index]);
+
+		const FVector Extent = (Particle->Size * Scale).GetAbs();
+		const float LocalMax = std::max({ Extent.X, Extent.Y, Extent.Z });
+		const FVector& Position = Particle->Location;
+
+		MinVal.X = std::min(MinVal.X, Position.X - LocalMax);
+		MinVal.Y = std::min(MinVal.Y, Position.Y - LocalMax);
+		MinVal.Z = std::min(MinVal.Z, Position.Z - LocalMax);
+		MaxVal.X = std::max(MaxVal.X, Position.X + LocalMax);
+		MaxVal.Y = std::max(MaxVal.Y, Position.Y + LocalMax);
+		MaxVal.Z = std::max(MaxVal.Z, Position.Z + LocalMax);
+	}
+
+	ParticleBoundingBox = FBox{ MinVal, MaxVal };
 }
 
 
