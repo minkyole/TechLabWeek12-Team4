@@ -3,6 +3,7 @@
 #include "ParticleReplayData.h"
 #include "ParticleRenderData.h"
 #include "Math/Box.h"
+#include "Math/Matrix.h"
 
 class UParticleSystemComponent;
 class UParticleEmitter;
@@ -43,7 +44,8 @@ public:
 	void ResetParticleParameters();
 	void IntegrateParticles(float DeltaTime);
 
-	/** 활성 파티클 위치와 크기로 ParticleBoundingBox를 갱신. 고정 바운드 모드면 건너뜀 */
+	void UpdateTransforms();
+
 	void UpdateBoundingBox();
 	const FBox& GetBoundingBox() const { return ParticleBoundingBox; }
 
@@ -56,6 +58,11 @@ public:
 	UParticleLODLevel* CurrentLODLevel = nullptr;
 
 	UMaterialInterface* CurrentMaterial = nullptr; // TODO
+
+	// TODO: 에셋 연결 시 CurrentLODLevel->RequiredModule->bUseLocalSpace
+	bool bUseLocalSpace = false;
+	FMatrix EmitterToSimulation = FMatrix::Identity;
+	FMatrix SimulationToWorld = FMatrix::Identity;
 
 
 	//Particle
@@ -81,7 +88,6 @@ public:
 	int32 MaxActiveParticles = 0;
 	/** 스폰하고 남은 시간의 소수 부분 */
 	float SpawnFraction = 0.0f;
-	/** 활성 파티클을 감싸는 월드 공간 박스. ActiveParticles > 0일 때만 유효 */
 	FBox ParticleBoundingBox{};
 
 

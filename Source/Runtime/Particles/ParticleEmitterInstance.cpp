@@ -4,6 +4,7 @@
 #include "ParticleHelper.h"
 #include "Components/ParticleSystemComponent.h"
 #include "Asset/AssetManager.h"
+#include "Math/Transform.h"
 
 FParticleEmitterInstance::~FParticleEmitterInstance()
 {
@@ -11,7 +12,8 @@ FParticleEmitterInstance::~FParticleEmitterInstance()
 }
 
 void FParticleEmitterInstance::Tick(float DeltaTime)
-{ 
+{
+	UpdateTransforms();
 	AgeAndKillParticles(DeltaTime);
 	ResetParticleParameters();
 	Spawn(DeltaTime);
@@ -77,7 +79,7 @@ void FParticleEmitterInstance::UpdateBoundingBox()
 	}
 
 	const FVector Scale = Component->GetWorldScale3D();
-	// TODO: bUseLocalSpace면 Location을 컴포넌트 월드 행렬로 변환한 위치로 계산
+	const FMatrix ComponentToWorld = Component->GetWorldMatrix();
 
 	FVector MinVal(FLT_MAX, FLT_MAX, FLT_MAX);
 	FVector MaxVal(-FLT_MAX, -FLT_MAX, -FLT_MAX);
@@ -88,7 +90,9 @@ void FParticleEmitterInstance::UpdateBoundingBox()
 
 		const FVector Extent = (Particle->Size * Scale).GetAbs();
 		const float LocalMax = std::max({ Extent.X, Extent.Y, Extent.Z });
-		const FVector& Position = Particle->Location;
+		const FVector Position = bUseLocalSpace
+			? ComponentToWorld.TransformPosition(Particle->Location)
+			: Particle->Location;
 
 		MinVal.X = std::min(MinVal.X, Position.X - LocalMax);
 		MinVal.Y = std::min(MinVal.Y, Position.Y - LocalMax);
@@ -101,14 +105,39 @@ void FParticleEmitterInstance::UpdateBoundingBox()
 	ParticleBoundingBox = FBox{ MinVal, MaxVal };
 }
 
+void FParticleEmitterInstance::UpdateTransforms()
+{
+	if (!Component)
+	{
+		return;
+	}
+
+	const FMatrix ComponentToWorld =
+		FTransform(Component->GetWorldRotation(), Component->GetWorldLocation()).GetLocalMatrix();
+
+	// TODO: RequiredModule에 EmitterOrigin/EmitterRotation이 생기면 EmitterToComponent를 앞에 곱한다.
+	if (bUseLocalSpace)
+	{
+		EmitterToSimulation = FMatrix::Identity;
+		SimulationToWorld = ComponentToWorld;
+	}
+	else
+	{
+		EmitterToSimulation = ComponentToWorld;
+		SimulationToWorld = FMatrix::Identity;
+	}
+}
+
 
 void FParticleEmitterInstance::Spawn(float DeltaTime)
 {
 	// 임시값
 	float Rate = 25.0f;
-	FVector SpawnLocation = FVector(1.0f, 1.0f, 1.0f);
 	FVector SpawnVelocity = FVector(0.0f, 0.0f, 1.0f);
 	//
+
+	const FVector4 Origin = EmitterToSimulation.GetOrigin();
+	const FVector SpawnLocation(Origin.X, Origin.Y, Origin.Z);
 
 	if (Rate <= 0)
 	{
@@ -262,7 +291,10 @@ bool FParticleEmitterInstance::FillReplayData(
 		ActiveParticles
 	);
 
-	
+	FDynamicSpriteEmitterReplayDataBase* SpriteReplayDataBase =
+		static_cast<FDynamicSpriteEmitterReplayDataBase*>(&OutDynamicEmitterReplayDataBase);
+	SpriteReplayDataBase->bUseLocalSpace = bUseLocalSpace;
+
 	return true;
 }
 

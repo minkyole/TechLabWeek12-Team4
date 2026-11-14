@@ -33,7 +33,6 @@ void UParticleSystemComponent::TickComponent(float DeltaTime)
 		EmitterInstance->Tick(DeltaTime);
 	}
 
-	// 동적 바운드는 씬에 등록된 박스보다 커졌을 때만 다시 반영한다.
 	FPrimitiveSceneProxy* Proxy = GetSceneProxy();
 	FBox NewBox{};
 	if (!bUseFixedRelativeBoundingBox && Proxy && GetEmitterBoundingBox(NewBox))
@@ -67,7 +66,6 @@ FBox UParticleSystemComponent::CalcBounds() const
 		return FBox{ Origin, Origin };
 	}
 
-	// Extent(절반 크기)의 10%만큼 확장해 조금 커져도 다시 반영하지 않게 한다.
 	const FVector ExpandAmount = (BoundingBox.Max - BoundingBox.Min) * 0.05f;
 	return FBox{ BoundingBox.Min - ExpandAmount, BoundingBox.Max + ExpandAmount };
 }
