@@ -117,7 +117,8 @@ void FParticleEmitterInstance::PostSpawn(FBaseParticle* Particle,
 	Particle->Flags |= STATE_Particle_JustSpawned;
 }
 
-void FParticleEmitterInstance::SpawnParticles(int32 Count, float StartTime, float Increment, const FVector& InitialLocation, const FVector& InitialVelocity)
+void FParticleEmitterInstance::SpawnParticles(int32 Count, float StartTime, float Increment, 
+	const FVector& InitialLocation, const FVector& InitialVelocity)
 {
 	float SpawnTime;
 	float InterpolationPercentage = 1.0f;

@@ -21,6 +21,7 @@
 #include "GameFramework/Actor/DecalActor.h"
 #include "GameFramework/Actor/FakeSpotLightActor.h"
 #include "GameFramework/Actor/Character.h"
+#include "GameFramework/Actor/ParticleSystemActor.h"
 #include "Sequence/SequenceActor.h"
 
 class FMultipleViewportsAdapter;
@@ -80,7 +81,7 @@ public:
 		ACapsuleActor::StaticClass(),
 		ADirectionalLightActor::StaticClass(),
 		AExponentialHeightFogActor::StaticClass(),
-		AParticleActor::StaticClass(),
+		AParticleSystemActor::StaticClass(),
 		APlayerActor::StaticClass(),
 		APointLightActor::StaticClass(),
 		ARectLightActor::StaticClass(),
