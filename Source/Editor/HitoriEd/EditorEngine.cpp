@@ -1099,17 +1099,26 @@ void UEditorEngine::RenderOpaquePass(int32 ViewIndex, const FRenderingInfo& View
 			const auto& Camera =
 			    MultipleViewportsAdapter.GetEffectiveCamera(ViewIndex);
 
-			const FVector CameraRight =
+			FParticleSpriteView ParticleView{};
+
+			ParticleView.ViewProjection = ViewProjection;
+			ParticleView.CameraPosition = Camera.Transform.Location;
+
+			ParticleView.CameraRight =
 			    Camera.Transform.Rotation.GetRightVector();
 
-			const FVector CameraUp =
+			ParticleView.CameraUp =
 			    Camera.Transform.Rotation.GetUpVector();
+			
+			ParticleView.CameraForward =
+			    Camera.Transform.Rotation.GetForwardVector();
+	
+			ParticleView.bOrthographic =
+			    Camera.Projection.Mode != EProjectionMode::Perspective;
 
 			ParticleSpriteRenderer->OnRender(
 			    ParticlePackets,
-			    ViewProjection,
-			    CameraRight,
-			    CameraUp);
+				ParticleView);
 		}
 
 		RenderCommand::SetRasterizerState(ERasterizerState::SolidBack);

@@ -196,9 +196,9 @@ bool FParticleSpriteRenderer::EnsureCapacity(
 bool FParticleSpriteRenderer::Draw(
     const TArray<FParticleSpriteInstanceVertex>& Instances,
     UMaterial* Material,
-    const FMatrix& ViewProjection,
-    const FVector& CameraRight,
-    const FVector& CameraUp)
+	const FParticleSpriteView& View,
+    EParticleScreenAlignment ScreenAlignment,
+    EParticleAxisLock AxisLock)
 {
 	if (Instances.Num() == 0)
 	{
@@ -238,9 +238,15 @@ bool FParticleSpriteRenderer::Draw(
 
 	FParticleSpriteViewConstants Constants{};
 
-	Constants.ViewProjection = ViewProjection;
-	Constants.CameraRight = CameraRight;
-	Constants.CameraUp = CameraUp;
+	Constants.ViewProjection = View.ViewProjection;
+	Constants.CameraRight = View.CameraRight.Normalized();
+	Constants.CameraUp = View.CameraUp.Normalized();
+	Constants.CameraPosition = View.CameraPosition;
+	Constants.CameraFowward = View.CameraForward.Normalized();
+
+	Constants.ScreenAlignment = static_cast<uint32>(ScreenAlignment);
+	Constants.AxisLock = static_cast<uint32>(AxisLock);
+	Constants.bOrthographic = View.bOrthographic ? 1u : 0u;
 
 	RenderCommand::UpdateBufferData(
 	    ViewCB.get(),
@@ -380,17 +386,12 @@ void FParticleSpriteRenderer::CollectPackets(
 
 void FParticleSpriteRenderer::OnRender(
 	const TArray<FRenderPacket>& ParticlePackets,
-	const FMatrix& ViewProjection,
-	const FVector& CameraRight,
-	const FVector& CameraUp)
+	const FParticleSpriteView& View)
 {
 	if (ParticlePackets.Num() == 0)
 	{
 		return;
 	}
-
-	const FVector Right = CameraRight.Normalized();
-	const FVector Up = CameraUp.Normalized();
 
 	for (const FRenderPacket& Packet : ParticlePackets)
 	{
@@ -402,9 +403,9 @@ void FParticleSpriteRenderer::OnRender(
 		if (!Draw(
 			Packet.SpriteInstances,
 			Packet.Material,
-			ViewProjection,
-			Right,
-			Up))
+			View,
+			Packet.ParticleScreenAlignment,
+			Packet.ParticleAxisLock))
 		{
 			HTR_LOG(
 			    Error,

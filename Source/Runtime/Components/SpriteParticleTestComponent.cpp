@@ -60,7 +60,8 @@ USpriteParticleTestComponent::BuildReplayData() const
 	Replay.bUseLocalSpace = bUseLocalSpace;
 	Replay.Scale = GetParticleRenderScale();
 	Replay.SortMode = EParticleSortMode::DistanceToView;
-	Replay.BillboardMode = eBillboardMode;
+	Replay.ScreenAlignment = eParticleScreenAlignment;
+	Replay.AxisLock = eParticleAxisLock;
 
 	if (Replay.ActiveParticleCount > 0)
 	{
@@ -151,10 +152,19 @@ FVector USpriteParticleTestComponent::GetParticleRenderScale() const
 	    std::abs(Scale.Z));
 }
 
-void USpriteParticleTestComponent::SetBillboardMode(
-    EParticleBillboardMode InMode)
+void USpriteParticleTestComponent::SetScreenAlignment(
+    EParticleScreenAlignment InAlignment)
 {
-	eBillboardMode = InMode;
+	eParticleScreenAlignment = InAlignment;
+	if (FPrimitiveSceneProxy* Proxy = GetSceneProxy())
+	{
+		Proxy->InvalidateDynamicData();
+	}
+}
+void USpriteParticleTestComponent::SetAxisLock(
+    EParticleAxisLock InAxisLock)
+{
+	eParticleAxisLock = InAxisLock;
 	if (FPrimitiveSceneProxy* Proxy = GetSceneProxy())
 	{
 		Proxy->InvalidateDynamicData();

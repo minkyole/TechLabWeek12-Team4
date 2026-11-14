@@ -119,7 +119,10 @@ bool FSpriteParticleSceneProxy::GatherDynamicRenderPackets(
 	Center *= 1.0f / static_cast<float>(Packet.SpriteInstances.Num());
 
 	Packet.CameraToParticleDistance = (Center - CameraLocation).SizeSquared();
-	Packet.ParticleBillboardMode = DynamicData->GetSource().BillboardMode;
+
+	const auto& Source = DynamicData->GetSource();
+	Packet.ParticleScreenAlignment = Source.ScreenAlignment;
+	Packet.ParticleAxisLock = Source.AxisLock;
 
 	// 배열을 포함한 패킷을 이동한다.
 	RenderQueue.Add(std::move(Packet));

@@ -13,10 +13,28 @@ struct alignas(16) FParticleSpriteViewConstants
 	FMatrix ViewProjection;
 
 	FVector CameraRight;
-	float Padding0 = 0.0f;
+	uint32 ScreenAlignment = 0;
 
 	FVector CameraUp;
-	float Padding1 = 0.0f;
+	uint32 AxisLock = 0;
+
+	FVector CameraPosition;
+	uint32 bOrthographic = 0;
+
+	FVector CameraFowward;
+	float Padding = 0.0f;
+};
+
+struct FParticleSpriteView
+{
+	FMatrix ViewProjection;
+
+	FVector CameraRight;
+	FVector CameraUp;
+	FVector CameraPosition;
+	FVector CameraForward;
+
+	bool bOrthographic = false;
 };
 
 class FParticleSpriteRenderer
@@ -27,9 +45,9 @@ public:
 	bool Draw(
 	    const TArray<FParticleSpriteInstanceVertex>& Instances,
 	    UMaterial* Material,
-	    const FMatrix& ViewProjection,
-	    const FVector& CameraRight,
-	    const FVector& CameraUp);
+	    const FParticleSpriteView& View,
+		EParticleScreenAlignment ScreenAlignment,
+		EParticleAxisLock AxisLock);
 
 	// 일반 메시 큐에서 Sprite 패킷만 이동해서 분리한다.
 	void CollectPackets(
@@ -39,9 +57,7 @@ public:
 	// 현재 바인딩된 렌더 타깃에 Sprite 배치를 그린다.
 	void OnRender(
 	    const TArray<FRenderPacket>& ParticlePackets,
-	    const FMatrix& ViewProjection,
-	    const FVector& CameraRight,
-	    const FVector& CameraUp);
+	    const FParticleSpriteView& View);
 
 private:
 	bool EnsureCapacity(uint32 RequiredCount);

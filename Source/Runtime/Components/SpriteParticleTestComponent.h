@@ -22,12 +22,15 @@ public:
 	FDynamicSpriteEmitterReplayData BuildReplayData() const;
 
 	void ResetTestParticles(bool bInLocalSpace);
-	void SetBillboardMode(EParticleBillboardMode InMode);
+	void SetScreenAlignment(EParticleScreenAlignment InAlignment);
+	void SetAxisLock(EParticleAxisLock InAxisLock);
 	FVector GetParticleRenderScale() const;
 
 private:
 	bool bUseLocalSpace = false;
-	EParticleBillboardMode eBillboardMode = EParticleBillboardMode::ScreenAligned;
+
+	EParticleScreenAlignment eParticleScreenAlignment = EParticleScreenAlignment::Rectangle;
+	EParticleAxisLock eParticleAxisLock = EParticleAxisLock::None;
 
 	TArray<FBaseParticle> TestParticles;
 	TArray<uint16> TestParticleIndices;
