@@ -212,8 +212,6 @@ void FParticleEmitterInstance::Release()
 bool FParticleEmitterInstance::FillReplayData(
 	FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const
 {
-	// [임시] C의 FParticleDataContainer 구현(생성자/소멸자/CopyFrom)이 올라오면 #if 0 블록 해제
-#if 0
 	if (!ParticleData || ActiveParticles <= 0 || !Component)
 	{
 		return false;
@@ -236,10 +234,6 @@ bool FParticleEmitterInstance::FillReplayData(
 	// MaterialInterface는 타입마다 달라서 파생 클래스의 FillReplayData에서 설정
 
 	return true;
-#else
-	(void)OutDynamicEmitterReplayDataBase;
-	return false;
-#endif
 }
 
 FDynamicEmitterDataBase* FParticleEmitterInstance::GetDynamicData() const
@@ -271,21 +265,19 @@ bool FParticleSpriteEmitterInstance::FillReplayData(
 
 FDynamicEmitterDataBase* FParticleSpriteEmitterInstance::GetDynamicData() const
 {
-	// [임시] C의 FParticleDataContainer, FDynamicSpriteEmitterData 구현이 올라오면 #if 0 블록 해제
-#if 0
 	FDynamicSpriteEmitterReplayData ReplayData;
 	if (!FillReplayData(ReplayData))
 	{
 		return nullptr;
 	}
 
-	// UE는 FDynamicSpriteEmitterData를 먼저 new하고 Source를 직접 채우지만,
-	// 우리 FDynamicSpriteEmitterData는 생성자에서 ReplayData를 이동으로 받으므로 채운 뒤 넘긴다
 	return new FDynamicSpriteEmitterData(std::move(ReplayData));
-#else
-	return nullptr;
-#endif
 }
+
+/*-----------------------------------------------------------------------------
+	FParticleMeshEmitterInstance
+-----------------------------------------------------------------------------*/
+
 
 bool FParticleMeshEmitterInstance::FillReplayData(
 	FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const
@@ -308,19 +300,12 @@ bool FParticleMeshEmitterInstance::FillReplayData(
 }
 
 FDynamicEmitterDataBase* FParticleMeshEmitterInstance::GetDynamicData() const
-{ 
-	// [임시] C의 FParticleDataContainer, FDynamicMeshEmitterReplayData, FDynamicMeshEmitterData 구현이 올라오면 #if 0 블록 해제
-#if 0
+{
 	FDynamicMeshEmitterReplayData ReplayData;
 	if (!FillReplayData(ReplayData))
 	{
 		return nullptr;
 	}
 
-	// UE는 FDynamicMeshEmitterData를 먼저 new하고 Source를 직접 채우지만,
-	// 우리 FDynamicMeshEmitterData는 생성자에서 ReplayData를 이동으로 받으므로 채운 뒤 넘긴다
 	return new FDynamicMeshEmitterData(std::move(ReplayData));
-#else
-	return nullptr;
-#endif
 }
