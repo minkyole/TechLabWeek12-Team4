@@ -66,6 +66,12 @@ void FSpriteParticleSceneProxy::UpdateDynamicData()
 		// 전체 텍스처를 사용.
 		Instance.UVRect = FVector4(0.0f, 0.0f, 1.0f, 1.0f);
 
+		Instance.Velocity =
+		    Source.bUseLocalSpace
+		        ? LocalToWorld.TransformPosition(Particle.Velocity) -
+		              LocalToWorld.TransformPosition(FVector::ZeroVector)
+		        : Particle.Velocity;
+
 		Instances[ActiveIndex] = std::move(Instance);
 	}
 }

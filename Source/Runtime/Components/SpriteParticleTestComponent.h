@@ -13,6 +13,7 @@ class USpriteParticleTestComponent : public UBillboardComponent
 	GENERATED_BODY()
 public:
 	USpriteParticleTestComponent();
+	void OnRegister() override;
 
 	FPrimitiveSceneProxy* CreateSceneProxy() override;
 
@@ -27,7 +28,7 @@ public:
 	FVector GetParticleRenderScale() const;
 
 private:
-	bool bUseLocalSpace = false;
+	bool bUseLocalSpace = true;
 
 	EParticleScreenAlignment eParticleScreenAlignment = EParticleScreenAlignment::Rectangle;
 	EParticleAxisLock eParticleAxisLock = EParticleAxisLock::None;

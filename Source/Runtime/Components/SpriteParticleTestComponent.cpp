@@ -31,6 +31,16 @@ USpriteParticleTestComponent::USpriteParticleTestComponent()
 	Material->SamplerState = ESamplerState::LinearClamp;
 }
 
+void USpriteParticleTestComponent::OnRegister()
+{
+	Super::OnRegister();
+
+	if (TestParticles.Num() == 0)
+	{
+		ResetTestParticles(bUseLocalSpace);
+	}
+}
+
 FPrimitiveSceneProxy*
 USpriteParticleTestComponent::CreateSceneProxy()
 {
@@ -45,6 +55,62 @@ FBox USpriteParticleTestComponent::CalcLocalBounds() const
 	Bounds.Min = FVector(-4.0f, -4.0f, -4.0f);
 	Bounds.Max = FVector(4.0f, 4.0f, 4.0f);
 	return Bounds;
+}
+
+FBox USpriteParticleTestComponent::CalcBounds() const
+{
+	if (TestParticleIndices.Num() == 0)
+	{
+		const FVector Origin = GetWorldLocation();
+		return FBox{ Origin, Origin };
+	}
+
+	const FMatrix LocalToWorld = GetWorldMatrix();
+	const FVector RenderScale = GetParticleRenderScale();
+
+	FBox Result{};
+	bool bInitialized = false;
+
+	for (uint16 ParticleIndex : TestParticleIndices)
+	{
+		const FBaseParticle& Particle =
+		    TestParticles[ParticleIndex];
+
+		const FVector Center =
+		    bUseLocalSpace
+		        ? LocalToWorld.TransformPosition(Particle.Location)
+		        : Particle.Location;
+
+		const float Width =
+		    std::abs(Particle.Size.X * RenderScale.X);
+
+		const float Height =
+		    std::abs(Particle.Size.Y * RenderScale.Y);
+
+		// 전체 너비/높이 기준 반대각선 길이.
+		const float Radius =
+		    0.5f * std::sqrt(
+		               Width * Width + Height * Height);
+
+		const FVector Extent(Radius, Radius, Radius);
+
+		const FBox ParticleBounds{
+			Center - Extent,
+			Center + Extent
+		};
+		
+		if (!bInitialized)
+		{
+			Result = ParticleBounds;
+			bInitialized = true;
+		}
+		else
+		{
+			Result.Expand(ParticleBounds);
+		}
+	}
+
+	return Result;
 }
 
 FDynamicSpriteEmitterReplayData
@@ -78,7 +144,7 @@ USpriteParticleTestComponent::BuildReplayData() const
 }
 
 void USpriteParticleTestComponent::ResetTestParticles(
-	bool bInLocalSpace)
+    bool bInLocalSpace)
 {
 	bUseLocalSpace = bInLocalSpace;
 
@@ -128,6 +194,10 @@ void USpriteParticleTestComponent::ResetTestParticles(
 		    FLinearColor(1.0f, 0.6f, 0.2f, 0.8f);
 
 		Particle.BaseColor = Particle.Color;
+
+		// Velocity test
+		Particle.Velocity = FVector(0.0f, 1.0f, 1.0f);
+		Particle.BaseVelocity = Particle.Velocity;
 
 		TestParticleIndices[Index] =
 		    static_cast<uint16>(ParticleCount - 1 - Index);
