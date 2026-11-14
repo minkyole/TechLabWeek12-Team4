@@ -101,6 +101,7 @@ void FShader::BindingReflection(const FShaderByteCode& ByteCode)
 }
 
 FVertexShader::FVertexShader(ID3D11Device* Device, const FShaderByteCode& ByteCode)
+    : CachedByteCode(ByteCode)
 {
 	Type = EShaderType::Vertex;
 	if (!ByteCode.IsValid()) return;

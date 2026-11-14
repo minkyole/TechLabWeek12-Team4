@@ -4,11 +4,12 @@
 // Todo: subuv
 AParticleActor::AParticleActor()
 {
-	ParticleComponent = CreateDefaultSubobject<UParticleSubUVComponent>("UParticleSubUVComponent");
+	//ParticleComponent = CreateDefaultSubobject<UParticleSubUVComponent>("UParticleSubUVComponent");
+	ParticleComponent = CreateDefaultSubobject<USpriteParticleTestComponent>("SpriteParticleTestComponent");
 	SetRootComponent(ParticleComponent);
 
-	ParticleComponent->SetSubUVSize(8, 8);
-	ParticleComponent->SetFrameRate(12.0f);
+	//ParticleComponent->SetSubUVSize(8, 8);
+	//ParticleComponent->SetFrameRate(12.0f);
 }
 
 //UParticleSubUVComponent* AParticleActor::GetParticleComponent() const

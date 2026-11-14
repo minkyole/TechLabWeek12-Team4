@@ -3,8 +3,12 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Material.h"
+
 #include <array>
 #include <utility>
+
+#include "Particles/ParticleVertex.h"
+#include "Particles/ParticleTypes.h"
 
 class FPrimitiveSceneProxy;
 inline constexpr uint32 InvalidObjectSlot = ~0u;
@@ -23,6 +27,9 @@ struct FRenderPacket
     uint32 Slot = InvalidObjectSlot;
     uint8 LODIndex = 0;
     bool bOccludedByGpu = false;
+	EParticleScreenAlignment ParticleScreenAlignment = 
+        EParticleScreenAlignment::Rectangle;
+	EParticleAxisLock ParticleAxisLock = EParticleAxisLock::None;
 
     // 스켈레탈 메시와 CPU 스키닝 결과는 StaticMesh 에셋 없이 버퍼를 직접 전달한다.
     FVertexBuffer* VertexBuffer = nullptr;
@@ -31,7 +38,11 @@ struct FRenderPacket
     // GPU 스키닝 패킷이면 본 행렬 버퍼(t30, t31)를 가리킨다. VertexBuffer는 바인드 포즈 FSkeletalVertex(96바이트)다.
     FStructuredBuffer* SkinMatrices = nullptr;
     FStructuredBuffer* NormalMatrices = nullptr;
+
+    TArray<FParticleSpriteInstanceVertex> SpriteInstances;
+
     bool IsGPUSkinned() const { return SkinMatrices != nullptr; }
+	bool IsSpriteParticle() const { return SpriteInstances.Num() > 0; }
 
     FVertexBuffer* GetVertexBuffer() const
     {

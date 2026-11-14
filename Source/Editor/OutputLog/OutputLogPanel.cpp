@@ -4,6 +4,7 @@
 #include "Render/SkinningSettings.h"
 #include "Core/StatOverlay.h"
 #include "Animation/AnimInstance.h"
+#include "WindowCrashHandler.h"
 
 static int TextEditCallbackStub(ImGuiInputTextCallbackData* data)
 {
@@ -35,6 +36,7 @@ bool FOutputLogPanel::Init()
 	Commands.Add("ROOTMOTION");
 	// 두 이름 모두 자동완성과 같은 캐싱 설정을 사용한다.
 	Commands.Add("r.shadow.CacheWholeSceneShadows");
+	Commands.Add("CauseCrash");
 
 	HistoryPos = -1;
 	InputBuf[0] = '\0';
@@ -190,6 +192,14 @@ void FOutputLogPanel::ExecCommand(const FString& CommandLine)
 	if (CommandHandler && CommandHandler(CommandLine, CommandMessage))
 	{
 		FLog::Log(ELogVerbosity::Info, "{}", CommandMessage);
+		ScrollToBottom = true;
+		return;
+	}
+
+	FString CrashMessage;
+	if (FWindowCrashHandler::ExecCommand(CommandLine, CrashMessage))
+	{
+		FLog::Log(ELogVerbosity::Info, "{}", CrashMessage);
 		ScrollToBottom = true;
 		return;
 	}
