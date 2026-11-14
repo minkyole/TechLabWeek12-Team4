@@ -20,7 +20,6 @@ namespace
 		}
 		return Index == A.size() && B[Index] == '\0';
 	}
-	//테스트주석
 
 	// 공백 구분 토큰으로 나눈다. 연속 공백과 앞뒤 공백은 무시한다.
 	void Tokenize(const FString& Line, TArray<FString>& OutTokens)
