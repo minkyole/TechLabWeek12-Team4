@@ -341,6 +341,7 @@ project "HitoriEditor"
 		"dxgi.lib",
 		"dxguid.lib",
 		"d3dcompiler.lib",
+		"dbghelp.lib",
 	}
 
 	filter "files:Source/ThirdParty/ImNeoSequencer/*.cpp"
