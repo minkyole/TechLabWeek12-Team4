@@ -21,7 +21,7 @@ void UParticleSystemComponent::TickComponent(float DeltaTime)
 
 	if (EmitterInstances.IsEmpty())
 	{
-		FParticleEmitterInstance* ParticleEmitterInstance = new FParticleEmitterInstance();
+		FParticleEmitterInstance* ParticleEmitterInstance = new FParticleSpriteEmitterInstance();
 		ParticleEmitterInstance->Component = this;
 		ParticleEmitterInstance->Init(100, sizeof(FBaseParticle));
 		EmitterInstances.Add(ParticleEmitterInstance);

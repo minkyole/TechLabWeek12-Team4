@@ -2,6 +2,7 @@
 #include "ParticleEmitterInstance.h"
 #include "Core/HAL/UnrealMemory.h"
 #include "ParticleHelper.h"
+#include "Components/ParticleSystemComponent.h"
 
 FParticleEmitterInstance::~FParticleEmitterInstance()
 {
@@ -206,4 +207,120 @@ void FParticleEmitterInstance::Release()
 		ParticleSize = 0;
 		ParticleStride = 0;
 	}
+}
+
+bool FParticleEmitterInstance::FillReplayData(
+	FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const
+{
+	// [임시] C의 FParticleDataContainer 구현(생성자/소멸자/CopyFrom)이 올라오면 #if 0 블록 해제
+#if 0
+	if (!ParticleData || ActiveParticles <= 0 || !Component)
+	{
+		return false;
+	}
+	OutDynamicEmitterReplayDataBase.ActiveParticleCount = ActiveParticles;
+	OutDynamicEmitterReplayDataBase.ParticleStride = ParticleStride;
+	OutDynamicEmitterReplayDataBase.Scale = Component->GetWorldScale3D();
+	// OutDynamicEmitterReplayDataBase.SortMode =  TODO
+
+	OutDynamicEmitterReplayDataBase.DataContainer.CopyFrom(
+		ParticleData, 
+		MaxActiveParticles * ParticleStride, 
+		ParticleIndices, 
+		ActiveParticles
+	);
+
+	// TODO: 에셋(RequiredModule)이 생기면 공통 스프라이트 정보 채우기
+	// 모든 ReplayData 타입(Sprite/Mesh)이 FDynamicSpriteEmitterReplayDataBase를 상속하므로 static_cast로 접근
+	// - bUseLocalSpace : 로컬 좌표 사용 여부 (지금은 기본값 false, 월드 좌표)
+	// MaterialInterface는 타입마다 달라서 파생 클래스의 FillReplayData에서 설정
+
+	return true;
+#else
+	(void)OutDynamicEmitterReplayDataBase;
+	return false;
+#endif
+}
+
+FDynamicEmitterDataBase* FParticleEmitterInstance::GetDynamicData() const
+{
+	return nullptr;
+}
+
+/*-----------------------------------------------------------------------------
+	FParticleSpriteEmitterInstance
+-----------------------------------------------------------------------------*/
+
+bool FParticleSpriteEmitterInstance::FillReplayData(
+	FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const
+{
+	if (!FParticleEmitterInstance::FillReplayData(OutDynamicEmitterReplayDataBase))
+	{
+		return false;
+	}
+
+	OutDynamicEmitterReplayDataBase.eEmitterType = EDynamicEmitterType::Sprite;
+
+	// TODO: 에셋(RequiredModule)이 생기면 머티리얼 설정
+	// FDynamicSpriteEmitterReplayData* SpriteReplayData =
+	//     static_cast<FDynamicSpriteEmitterReplayData*>(&OutDynamicEmitterReplayDataBase);
+	// SpriteReplayData->MaterialInterface = ...;
+
+	return true;
+}
+
+FDynamicEmitterDataBase* FParticleSpriteEmitterInstance::GetDynamicData() const
+{
+	// [임시] C의 FParticleDataContainer, FDynamicSpriteEmitterData 구현이 올라오면 #if 0 블록 해제
+#if 0
+	FDynamicSpriteEmitterReplayData ReplayData;
+	if (!FillReplayData(ReplayData))
+	{
+		return nullptr;
+	}
+
+	// UE는 FDynamicSpriteEmitterData를 먼저 new하고 Source를 직접 채우지만,
+	// 우리 FDynamicSpriteEmitterData는 생성자에서 ReplayData를 이동으로 받으므로 채운 뒤 넘긴다
+	return new FDynamicSpriteEmitterData(std::move(ReplayData));
+#else
+	return nullptr;
+#endif
+}
+
+bool FParticleMeshEmitterInstance::FillReplayData(
+	FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const
+{
+	if (!FParticleEmitterInstance::FillReplayData(OutDynamicEmitterReplayDataBase))
+	{
+		return false;
+	}
+
+	OutDynamicEmitterReplayDataBase.eEmitterType = EDynamicEmitterType::Mesh;
+
+	 FDynamicMeshEmitterReplayData* MeshReplayData =
+	     static_cast<FDynamicMeshEmitterReplayData*>(&OutDynamicEmitterReplayDataBase);
+	 // TODO: B의 UParticleModuleTypeDataMesh가 생기면 해제
+	 //MeshReplayData->Mesh = MeshTypeData ? MeshTypeData->Mesh : nullptr;
+	 MeshReplayData->MeshRotationPayloadOffset  = MeshRotationOffset;
+	 MeshReplayData->MaterialInterface = nullptr;
+
+	return true;
+}
+
+FDynamicEmitterDataBase* FParticleMeshEmitterInstance::GetDynamicData() const
+{ 
+	// [임시] C의 FParticleDataContainer, FDynamicMeshEmitterReplayData, FDynamicMeshEmitterData 구현이 올라오면 #if 0 블록 해제
+#if 0
+	FDynamicMeshEmitterReplayData ReplayData;
+	if (!FillReplayData(ReplayData))
+	{
+		return nullptr;
+	}
+
+	// UE는 FDynamicMeshEmitterData를 먼저 new하고 Source를 직접 채우지만,
+	// 우리 FDynamicMeshEmitterData는 생성자에서 ReplayData를 이동으로 받으므로 채운 뒤 넘긴다
+	return new FDynamicMeshEmitterData(std::move(ReplayData));
+#else
+	return nullptr;
+#endif
 }

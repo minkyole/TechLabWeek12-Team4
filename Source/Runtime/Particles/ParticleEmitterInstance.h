@@ -1,25 +1,30 @@
 #pragma once
 #include "ParticleTypes.h"
+#include "ParticleReplayData.h"
+#include "ParticleRenderData.h"
 
 class UParticleSystemComponent;
 class UParticleEmitter;// 임시
 class UParticleLODLevel;// 임시
-
+class UParticleModuleTypeDataMesh; // 임시
 
 struct FParticleEmitterInstance
 {
-private:
+protected:
 	void PreSpawn(FBaseParticle* Particle, const FVector& InitialLocation, const FVector& InitialVelocity);
 	void PostSpawn(FBaseParticle* Particle, float InterpolationPercentage, float SpawnTime);
 
-
+	/** 모든 이미터 타입에 공통인 ReplayData 필드를 채운다. 파생 클래스의 override에서 먼저 호출 */
+	virtual bool FillReplayData(FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const;
 
 public:
 	FParticleEmitterInstance() = default;
 	FParticleEmitterInstance(const FParticleEmitterInstance&) = delete;
 	FParticleEmitterInstance& operator= (const FParticleEmitterInstance&) = delete;
 
-	~FParticleEmitterInstance();
+	virtual ~FParticleEmitterInstance();
+	/** 이미터 타입에 맞는 DynamicEmitterData를 생성해 반환. 호출자가 delete 책임. 베이스는 nullptr */
+	virtual FDynamicEmitterDataBase* GetDynamicData() const;
 
 	void Spawn(float DeltaTime);
 	void SpawnParticles(int32 Count, float StartTime, float Increment, const FVector& InitialLocation,
@@ -69,4 +74,25 @@ public:
 
 
 
+};
+
+struct FParticleSpriteEmitterInstance : public FParticleEmitterInstance
+{
+public:
+	virtual FDynamicEmitterDataBase* GetDynamicData() const override;
+
+protected:
+	virtual bool FillReplayData(FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const override;
+};
+
+struct FParticleMeshEmitterInstance : public FParticleEmitterInstance
+{
+public:
+	virtual FDynamicEmitterDataBase* GetDynamicData() const override;
+
+	UParticleModuleTypeDataMesh* MeshTypeData = nullptr;
+	int32 MeshRotationOffset = InvalidPayloadOffset;
+
+protected:
+	virtual bool FillReplayData(FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const override;
 };
