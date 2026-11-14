@@ -17,6 +17,18 @@ public:
 	FPrimitiveSceneProxy* CreateSceneProxy() override;
 
 	FBox CalcLocalBounds() const override;
+	FBox CalcBounds() const override;
 
 	FDynamicSpriteEmitterReplayData BuildReplayData() const;
+
+	void ResetTestParticles(bool bInLocalSpace);
+	void SetBillboardMode(EParticleBillboardMode InMode);
+	FVector GetParticleRenderScale() const;
+
+private:
+	bool bUseLocalSpace = false;
+	EParticleBillboardMode eBillboardMode = EParticleBillboardMode::ScreenAligned;
+
+	TArray<FBaseParticle> TestParticles;
+	TArray<uint16> TestParticleIndices;
 };

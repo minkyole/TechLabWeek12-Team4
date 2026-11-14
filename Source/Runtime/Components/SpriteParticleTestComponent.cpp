@@ -50,41 +50,75 @@ FBox USpriteParticleTestComponent::CalcLocalBounds() const
 FDynamicSpriteEmitterReplayData
 USpriteParticleTestComponent::BuildReplayData() const
 {
+	FDynamicSpriteEmitterReplayData Replay;
+
+	Replay.ActiveParticleCount = TestParticleIndices.Num();
+	Replay.ParticleStride =
+	    static_cast<int32>(sizeof(FBaseParticle));
+
+	Replay.MaterialInterface = GetMaterial(0);
+	Replay.bUseLocalSpace = bUseLocalSpace;
+	Replay.Scale = GetParticleRenderScale();
+	Replay.SortMode = EParticleSortMode::DistanceToView;
+	Replay.BillboardMode = eBillboardMode;
+
+	if (Replay.ActiveParticleCount > 0)
+	{
+		Replay.DataContainer.CopyFrom(
+		    reinterpret_cast<const uint8*>(
+		        TestParticles.GetData()),
+		    TestParticles.Num() *
+		        static_cast<int32>(sizeof(FBaseParticle)),
+		    TestParticleIndices.GetData(),
+		    TestParticleIndices.Num());
+	}
+
+	return Replay;
+}
+
+void USpriteParticleTestComponent::ResetTestParticles(
+	bool bInLocalSpace)
+{
+	bUseLocalSpace = bInLocalSpace;
+
 	constexpr int32 ParticleCount = 1000;
 	constexpr int32 ColumnCount = 40;
-	constexpr float Spacing = 0.15f;
-	constexpr float Pi = 3.14159265358979323846f;
-
 	constexpr int32 RowCount =
 	    (ParticleCount + ColumnCount - 1) / ColumnCount;
 
-	TArray<FBaseParticle> Particles;
-	Particles.SetNum(ParticleCount);
+	constexpr float Spacing = 0.15f;
+	constexpr float Pi = 3.14159265358979323846f;
 
-	TArray<uint16> ParticleIndices;
-	ParticleIndices.SetNum(ParticleCount);
+	TestParticles.SetNum(ParticleCount);
+	TestParticleIndices.SetNum(ParticleCount);
 
-	const FVector Origin = GetWorldLocation();
+	const FMatrix LocalToWorld = GetWorldMatrix();
 
 	for (int32 Index = 0; Index < ParticleCount; ++Index)
 	{
-		FBaseParticle& Particle = Particles[Index];
+		FBaseParticle& Particle = TestParticles[Index];
+		Particle = FBaseParticle{};
 
 		const int32 Column = Index % ColumnCount;
 		const int32 Row = Index / ColumnCount;
 
 		const float Horizontal =
-		    (static_cast<float>(Column) - (ColumnCount - 1) * 0.5f) * Spacing;
+		    (Column - (ColumnCount - 1) * 0.5f) * Spacing;
 
 		const float Vertical =
-		    (static_cast<float>(Row) - (RowCount - 1) * 0.5f) * Spacing;
+		    (Row - (RowCount - 1) * 0.5f) * Spacing;
 
-		// YZ 평면에 40열 × 25행으로 배치.
-		Particle.Location =
-		    Origin + FVector(0.0f, Horizontal, Vertical);
+		const FVector LocalPosition(
+		    0.0f, Horizontal, Vertical);
 
-		// 회전 여부를 확인하기 위한 직사각형.
+		Particle.Location = bUseLocalSpace
+		                        ? LocalPosition
+		                        : LocalToWorld.TransformPosition(LocalPosition);
+
+		Particle.OldLocation = Particle.Location;
+
 		Particle.Size = FVector(0.1f, 0.06f, 1.0f);
+		Particle.BaseSize = Particle.Size;
 
 		Particle.Rotation =
 		    static_cast<float>(Index % 12) * Pi / 6.0f;
@@ -92,30 +126,37 @@ USpriteParticleTestComponent::BuildReplayData() const
 		Particle.Color =
 		    FLinearColor(1.0f, 0.6f, 0.2f, 0.8f);
 
-		// 비연속 순서로 읽는 경로도 함께 검증.
-		ParticleIndices[Index] =
+		Particle.BaseColor = Particle.Color;
+
+		TestParticleIndices[Index] =
 		    static_cast<uint16>(ParticleCount - 1 - Index);
 	}
 
-	FDynamicSpriteEmitterReplayData Replay;
+	// 파티클 변경은 컴포넌트 이동 없이도 Bounds를 변경한다.
+	OnTransformDirty();
 
-	Replay.ActiveParticleCount = ParticleCount;
+	if (FPrimitiveSceneProxy* Proxy = GetSceneProxy())
+	{
+		Proxy->InvalidateDynamicData();
+	}
+}
 
-	Replay.ParticleStride =
-	    static_cast<int32>(sizeof(FBaseParticle));
+FVector USpriteParticleTestComponent::GetParticleRenderScale() const
+{
+	const FVector Scale = GetWorldScale3D();
 
-	Replay.MaterialInterface = GetMaterial(0);
-	Replay.bUseLocalSpace = false;
-	Replay.Scale = FVector(1.0f, 1.0f, 1.0f);
-	Replay.SortMode = EParticleSortMode::None;
+	return FVector(
+	    std::abs(Scale.X),
+	    std::abs(Scale.Y),
+	    std::abs(Scale.Z));
+}
 
-	Replay.DataContainer.CopyFrom(
-	    reinterpret_cast<const uint8*>(
-	        Particles.GetData()),
-	    ParticleCount *
-	        static_cast<int32>(sizeof(FBaseParticle)),
-	    ParticleIndices.GetData(),
-	    ParticleCount);
-
-	return Replay;
+void USpriteParticleTestComponent::SetBillboardMode(
+    EParticleBillboardMode InMode)
+{
+	eBillboardMode = InMode;
+	if (FPrimitiveSceneProxy* Proxy = GetSceneProxy())
+	{
+		Proxy->InvalidateDynamicData();
+	}
 }

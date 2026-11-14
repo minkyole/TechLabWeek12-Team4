@@ -24,33 +24,38 @@ void FSpriteParticleSceneProxy::UpdateDynamicData()
 
 	DynamicData = MakeUnique<FDynamicSpriteEmitterData>(
 	    Component->BuildReplayData());
-	
+
 	const auto& Source = DynamicData->GetSource();
 
 	// 이번 단계에서 지원하는 실제 재질 타입은 UMaterial이다.
 	Material = Cast<UMaterial>(Source.MaterialInterface);
 
 	assert(Material);
-	assert(!Source.bUseLocalSpace);
 	assert(Source.ActiveParticleCount >= 0);
 
 	Instances.SetNum(Source.ActiveParticleCount);
 
+	const FMatrix& LocalToWorld = GetLocalToWorld();
+
 	for (int32 ActiveIndex = 0;
-		ActiveIndex < Source.ActiveParticleCount;
-		++ActiveIndex)
+	     ActiveIndex < Source.ActiveParticleCount;
+	     ++ActiveIndex)
 	{
 		const FBaseParticle& Particle =
 		    Source.GetParticle(ActiveIndex);
 
 		FParticleSpriteInstanceVertex Instance{};
 
-		Instance.Position = Particle.Location;
+		Instance.Position =
+		    Source.bUseLocalSpace
+		        ? LocalToWorld.TransformPosition(Particle.Location)
+		        : Particle.Location;
+
 		Instance.Rotation = Particle.Rotation;
 
 		Instance.Size = FVector2(
-		    Particle.Size.X * Source.Scale.X,
-		    Particle.Size.Y * Source.Scale.Y);
+		    std::abs(Particle.Size.X * Source.Scale.X),
+		    std::abs(Particle.Size.Y * Source.Scale.Y));
 
 		Instance.Color = FVector4(
 		    Particle.Color.R,
@@ -106,7 +111,7 @@ bool FSpriteParticleSceneProxy::GatherDynamicRenderPackets(
 	FVector Center = FVector::ZeroVector;
 
 	for (const FParticleSpriteInstanceVertex& Instance :
-		Packet.SpriteInstances)
+	     Packet.SpriteInstances)
 	{
 		Center += Instance.Position;
 	}
@@ -114,6 +119,7 @@ bool FSpriteParticleSceneProxy::GatherDynamicRenderPackets(
 	Center *= 1.0f / static_cast<float>(Packet.SpriteInstances.Num());
 
 	Packet.CameraToParticleDistance = (Center - CameraLocation).SizeSquared();
+	Packet.ParticleBillboardMode = DynamicData->GetSource().BillboardMode;
 
 	// 배열을 포함한 패킷을 이동한다.
 	RenderQueue.Add(std::move(Packet));

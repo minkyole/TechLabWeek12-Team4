@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "Particles/ParticleVertex.h"
+#include "Particles/ParticleTypes.h"
 
 class FPrimitiveSceneProxy;
 inline constexpr uint32 InvalidObjectSlot = ~0u;
