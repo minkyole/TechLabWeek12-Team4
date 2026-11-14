@@ -55,6 +55,7 @@ public:
 	void CreateDefaultTextures();
 	void CreateDefaultMeshes();
 	void CreateDefaultMaterial();
+	void CreateDefaultParticleMaterial();
 	void CreateParticleMaterial();
 	void CreateEditorArrowMaterial();
 

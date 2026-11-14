@@ -3,6 +3,7 @@
 #include "Core/HAL/UnrealMemory.h"
 #include "ParticleHelper.h"
 #include "Components/ParticleSystemComponent.h"
+#include "Asset/AssetManager.h"
 
 FParticleEmitterInstance::~FParticleEmitterInstance()
 {
@@ -228,12 +229,17 @@ bool FParticleEmitterInstance::FillReplayData(
 		ActiveParticles
 	);
 
-	// TODO: 에셋(RequiredModule)이 생기면 공통 스프라이트 정보 채우기
-	// 모든 ReplayData 타입(Sprite/Mesh)이 FDynamicSpriteEmitterReplayDataBase를 상속하므로 static_cast로 접근
-	// - bUseLocalSpace : 로컬 좌표 사용 여부 (지금은 기본값 false, 월드 좌표)
-	// MaterialInterface는 타입마다 달라서 파생 클래스의 FillReplayData에서 설정
-
+	
 	return true;
+}
+
+UMaterialInterface* FParticleEmitterInstance::GetCurrentMaterial() const
+{
+	if (CurrentMaterial)
+	{
+		return CurrentMaterial;
+	}
+	return UAssetManager::GetAssetByPath<UMaterial>("DefaultParticleMaterial");
 }
 
 FDynamicEmitterDataBase* FParticleEmitterInstance::GetDynamicData() const
@@ -255,10 +261,9 @@ bool FParticleSpriteEmitterInstance::FillReplayData(
 
 	OutDynamicEmitterReplayDataBase.eEmitterType = EDynamicEmitterType::Sprite;
 
-	// TODO: 에셋(RequiredModule)이 생기면 머티리얼 설정
-	// FDynamicSpriteEmitterReplayData* SpriteReplayData =
-	//     static_cast<FDynamicSpriteEmitterReplayData*>(&OutDynamicEmitterReplayDataBase);
-	// SpriteReplayData->MaterialInterface = ...;
+	FDynamicSpriteEmitterReplayData* SpriteReplayData =
+		static_cast<FDynamicSpriteEmitterReplayData*>(&OutDynamicEmitterReplayDataBase);
+	SpriteReplayData->MaterialInterface = GetCurrentMaterial();
 
 	return true;
 }

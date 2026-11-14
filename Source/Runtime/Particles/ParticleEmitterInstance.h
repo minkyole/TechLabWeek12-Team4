@@ -4,9 +4,10 @@
 #include "ParticleRenderData.h"
 
 class UParticleSystemComponent;
-class UParticleEmitter;// 임시
-class UParticleLODLevel;// 임시
-class UParticleModuleTypeDataMesh; // 임시
+class UParticleEmitter;
+class UParticleLODLevel;
+class UParticleModuleTypeDataMesh;
+class UMaterialInterface;
 
 struct FParticleEmitterInstance
 {
@@ -16,6 +17,8 @@ protected:
 
 	/** 모든 이미터 타입에 공통인 ReplayData 필드를 채운다. 파생 클래스의 override에서 먼저 호출 */
 	virtual bool FillReplayData(FDynamicEmitterReplayDataBase& OutDynamicEmitterReplayDataBase) const;
+
+	UMaterialInterface* GetCurrentMaterial() const;
 
 public:
 	FParticleEmitterInstance() = default;
@@ -46,6 +49,8 @@ public:
 	UParticleSystemComponent* Component = nullptr;
 	int32 CurrentLODLevelIndex = 0;
 	UParticleLODLevel* CurrentLODLevel = nullptr;
+
+	UMaterialInterface* CurrentMaterial = nullptr; // TODO
 
 
 	//Particle
