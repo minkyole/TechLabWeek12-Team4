@@ -50,46 +50,72 @@ FBox USpriteParticleTestComponent::CalcLocalBounds() const
 FDynamicSpriteEmitterReplayData
 USpriteParticleTestComponent::BuildReplayData() const
 {
-	FBaseParticle Particles[3]{};
+	constexpr int32 ParticleCount = 1000;
+	constexpr int32 ColumnCount = 40;
+	constexpr float Spacing = 0.15f;
+	constexpr float Pi = 3.14159265358979323846f;
+
+	constexpr int32 RowCount =
+	    (ParticleCount + ColumnCount - 1) / ColumnCount;
+
+	TArray<FBaseParticle> Particles;
+	Particles.SetNum(ParticleCount);
+
+	TArray<uint16> ParticleIndices;
+	ParticleIndices.SetNum(ParticleCount);
 
 	const FVector Origin = GetWorldLocation();
 
-	// 카메라가 -x에서 +x 방향을 바라보는 테스트 배치를 가정한다.
-	// x가 작을수록 카메라에 가깝다.
+	for (int32 Index = 0; Index < ParticleCount; ++Index)
+	{
+		FBaseParticle& Particle = Particles[Index];
 
-	Particles[0].Location = Origin + FVector(-2.0f, -0.6f, 0.0f);
-	Particles[0].Size = FVector(1.5f, 1.5f, 1.0f);
-	Particles[0].Color = FLinearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		const int32 Column = Index % ColumnCount;
+		const int32 Row = Index / ColumnCount;
 
-	Particles[1].Location = Origin + FVector(0.0f, 1.5f, 0.0f);
-	Particles[1].Size = FVector(1.0f, 2.0f, 1.0f);
-	Particles[1].Color = FLinearColor(0.0f, 1.0f, 0.0f, 0.5f);
+		const float Horizontal =
+		    (static_cast<float>(Column) - (ColumnCount - 1) * 0.5f) * Spacing;
 
-	Particles[2].Location = Origin + FVector(2.0f, 0.6f, 0.0f);
-	Particles[2].Size = FVector(2.0f, 1.0f, 1.0f);
-	Particles[2].Color = FLinearColor(0.0f, 0.0f, 1.0f, 0.25f);
+		const float Vertical =
+		    (static_cast<float>(Row) - (RowCount - 1) * 0.5f) * Spacing;
 
-	// 물리 슬롯과 활성 목록 순서가 달라도 읽히는지 함께 검증한다.
-	const uint16 ParticleIndices[3] = { 2, 0, 1 };
+		// YZ 평면에 40열 × 25행으로 배치.
+		Particle.Location =
+		    Origin + FVector(0.0f, Horizontal, Vertical);
+
+		// 회전 여부를 확인하기 위한 직사각형.
+		Particle.Size = FVector(0.1f, 0.06f, 1.0f);
+
+		Particle.Rotation =
+		    static_cast<float>(Index % 12) * Pi / 6.0f;
+
+		Particle.Color =
+		    FLinearColor(1.0f, 0.6f, 0.2f, 0.8f);
+
+		// 비연속 순서로 읽는 경로도 함께 검증.
+		ParticleIndices[Index] =
+		    static_cast<uint16>(ParticleCount - 1 - Index);
+	}
 
 	FDynamicSpriteEmitterReplayData Replay;
 
-	Replay.ActiveParticleCount = 3;
+	Replay.ActiveParticleCount = ParticleCount;
+
 	Replay.ParticleStride =
 	    static_cast<int32>(sizeof(FBaseParticle));
 
 	Replay.MaterialInterface = GetMaterial(0);
 	Replay.bUseLocalSpace = false;
 	Replay.Scale = FVector(1.0f, 1.0f, 1.0f);
-
-	// 이번에는 Renderer의 공통 반투명 정렬을 사용한다.
 	Replay.SortMode = EParticleSortMode::None;
 
 	Replay.DataContainer.CopyFrom(
-	    reinterpret_cast<const uint8*>(Particles),
-	    static_cast<int32>(sizeof(Particles)),
-	    ParticleIndices,
-	    3);
+	    reinterpret_cast<const uint8*>(
+	        Particles.GetData()),
+	    ParticleCount *
+	        static_cast<int32>(sizeof(FBaseParticle)),
+	    ParticleIndices.GetData(),
+	    ParticleCount);
 
 	return Replay;
 }
