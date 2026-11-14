@@ -17,6 +17,11 @@ public:
 	bool bUseLocalSpace = false;
 	EParticleSortMode SortMode = EParticleSortMode::None;
 
+	// 스프라이트 에미터의 판 방향. Mesh 에미터는 무시한다.
+	EParticleScreenAlignment ScreenAlignment = EParticleScreenAlignment::ViewPlane;
+	// ScreenAlignment가 AxisLock일 때만 사용한다. 엔진의 Up 축은 Z다.
+	EParticleLockAxis LockAxis = EParticleLockAxis::Z;
+
 	float EmitterDuration = 1.0f;
 	// 0이면 무한 반복.
 	int32 EmitterLoops = 0;

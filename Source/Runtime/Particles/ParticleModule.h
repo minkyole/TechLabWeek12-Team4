@@ -25,19 +25,12 @@ public:
 
 	// 파티클이 생성될 때 한 번 호출된다.
 	// PayloadOffset은 파티클 슬롯 시작 기준 바이트 오프셋이다.
-	virtual void Spawn(
-	    FParticleEmitterInstance& Owner,
-	    int32 PayloadOffset,
-	    float SpawnTime,
-	    FBaseParticle& Particle)
+	virtual void Spawn(FParticleEmitterInstance& Owner, int32 PayloadOffset, float SpawnTime, FBaseParticle& Particle)
 	{
 	}
 
 	// 매 틱 살아 있는 파티클마다 호출된다.
-	virtual void Update(
-	    FParticleEmitterInstance& Owner,
-	    int32 PayloadOffset,
-	    float DeltaTime)
+	virtual void Update(FParticleEmitterInstance& Owner, int32 PayloadOffset, float DeltaTime)
 	{
 	}
 
