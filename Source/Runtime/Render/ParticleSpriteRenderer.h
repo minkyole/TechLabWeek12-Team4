@@ -2,6 +2,7 @@
 
 #include "Render/Buffer.h"
 #include "Particles/ParticleVertex.h"
+#include "Particles/ParticleTypes.h"
 
 class UMaterial;
 class FShaderProgram;

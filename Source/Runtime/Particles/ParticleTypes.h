@@ -25,7 +25,7 @@ enum class EParticleScreenAlignment : uint8
 	Rectangle,            // 카메라 평면에 직교하는 직사각형. SizeX, SizeY를 그대로 사용
 	Velocity,             // 카메라를 향하면서 이동방향에 맞춰 축을 정렬
 	// TypeSpecific,
-	FacingCameraDistanceBlend, // 카메라 위치를 향하지만 일정 거리 이상이면 정사각형으로 바뀐다.
+	// FacingCameraDistanceBlend, // 카메라 위치를 향하지만 일정 거리 이상이면 정사각형으로 바뀐다.
 };
 
 // AxisLock에서 고정할 월드 축.

@@ -44,6 +44,7 @@ struct VS_INPUT
     float2 Size : INSTANCE_SIZE0;
     float4 Color : INSTANCE_COLOR0;
     float4 UVRect : INSTANCE_UVRECT0;
+    float3 Velocity : INSTANCE_VELOCITY0;
 };
 
 struct PS_INPUT
@@ -158,8 +159,29 @@ void BuildLockedAxes(
         float3(0.0f, 1.0f, 0.0f));
 }
 
+void BuildVelocityAxes(
+    float3 ToCamera,
+    float3 Velocity,
+    out float3 Right,
+    out float3 Up)
+{
+    float3 ProjectedVelocity =
+        Velocity - ToCamera * dot(Velocity, ToCamera);
+    
+    if (dot(ProjectedVelocity, ProjectedVelocity) < 1e-8f)
+    {
+        BuildFacingAxes(ToCamera, Right, Up);
+        return;
+    }
+    
+    Up = normalize(ProjectedVelocity);
+    Right = normalize(cross(ToCamera, Up));
+    Up = normalize(cross(Right, ToCamera));
+}
+
 void BuildBillboardAxes(
     float3 Center,
+    float3 Velocity,
     out float3 Right,
     out float3 Up)
 {
@@ -170,7 +192,12 @@ void BuildBillboardAxes(
     {
         BuildLockedAxes(ToCamera, Right, Up);
         return;
-
+    }
+    
+    if (ScreenAlignment == ALIGN_VELOCITY)
+    {
+        BuildVelocityAxes(ToCamera, Velocity, Right, Up);
+        return;
     }
 
     if (ScreenAlignment == ALIGN_FACING_CAMERA_POSITION)
@@ -202,6 +229,7 @@ PS_INPUT mainVS(VS_INPUT Input)
     
     BuildBillboardAxes(
         Input.Center,
+        Input.Velocity,
         Right,
         Up);
     
@@ -216,13 +244,17 @@ PS_INPUT mainVS(VS_INPUT Input)
     float2 Offset = Input.Corner * Size;
     
     // 고정 축을 보존하기 위해 축 고정 시 회전을 무시한다.
-    float Rotation = AxisLock == AXIS_NONE
+    bool bAllowRotation =
+        AxisLock == AXIS_NONE &&
+        ScreenAlignment != ALIGN_VELOCITY;
+    
+    float Rotation = bAllowRotation
         ? Input.Rotation
         : 0.0f;
     
     float S;
     float C;
-    sincos(Input.Rotation, S, C);
+    sincos(Rotation, S, C);
     
     float2 RotatedOffset;
     

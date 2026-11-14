@@ -118,6 +118,14 @@ bool FParticleSpriteRenderer::Init()
 		          FParticleSpriteInstanceVertex,
 		          UVRect)),
 		  D3D11_INPUT_PER_INSTANCE_DATA,
+		  1 },
+		{ "INSTANCE_VELOCITY",
+		  0,
+		  DXGI_FORMAT_R32G32B32_FLOAT,
+		  1,
+		  static_cast<UINT>(
+		      offsetof(FParticleSpriteInstanceVertex, Velocity)),
+		  D3D11_INPUT_PER_INSTANCE_DATA,
 		  1 }
 	};
 
@@ -196,7 +204,7 @@ bool FParticleSpriteRenderer::EnsureCapacity(
 bool FParticleSpriteRenderer::Draw(
     const TArray<FParticleSpriteInstanceVertex>& Instances,
     UMaterial* Material,
-	const FParticleSpriteView& View,
+    const FParticleSpriteView& View,
     EParticleScreenAlignment ScreenAlignment,
     EParticleAxisLock AxisLock)
 {
@@ -299,61 +307,61 @@ bool FParticleSpriteRenderer::Draw(
 	    ERasterizerState::SolidNone);
 
 	RenderCommand::SetBlendState(
-		Material->BlendState);
+	    Material->BlendState);
 
-		RenderCommand::SetDepthStencilState(
-			Material->DepthStencilState);
+	RenderCommand::SetDepthStencilState(
+	    Material->DepthStencilState);
 
-		RenderCommand::BindSamplerState(
-			0,
-			Material->SamplerState,
-			EShaderBindFlagBits::Pixel);
+	RenderCommand::BindSamplerState(
+	    0,
+	    Material->SamplerState,
+	    EShaderBindFlagBits::Pixel);
 
-		RenderCommand::BindShaderResource(
-			0,
-			Material->Textures[0],
-			EShaderBindFlagBits::Pixel);
+	RenderCommand::BindShaderResource(
+	    0,
+	    Material->Textures[0],
+	    EShaderBindFlagBits::Pixel);
 
-		RenderCommand::DrawIndexedInstanced(
-			6,
-			InstanceCount);
+	RenderCommand::DrawIndexedInstanced(
+	    6,
+	    InstanceCount);
 
-		// 다음 일반 메시 Draw에 인스턴스 입력을 남기지 않는다.
-		ID3D11Buffer* NullBuffer = nullptr;
-		const UINT Zero = 0;
+	// 다음 일반 메시 Draw에 인스턴스 입력을 남기지 않는다.
+	ID3D11Buffer* NullBuffer = nullptr;
+	const UINT Zero = 0;
 
-		Context->IASetVertexBuffers(
-			1,
-			1,
-			&NullBuffer,
-			&Zero,
-			&Zero);
+	Context->IASetVertexBuffers(
+	    1,
+	    1,
+	    &NullBuffer,
+	    &Zero,
+	    &Zero);
 
-		return true;
+	return true;
 }
 
 void FParticleSpriteRenderer::CollectPackets(
-	FRenderQueue& InOutRenderQueue,
-	TArray<FRenderPacket>& OutParticlePackets)
+    FRenderQueue& InOutRenderQueue,
+    TArray<FRenderPacket>& OutParticlePackets)
 {
 	OutParticlePackets.Reset();
 
 	const uint32 PacketCount =
-		static_cast<uint32>(InOutRenderQueue.Num());
+	    static_cast<uint32>(InOutRenderQueue.Num());
 
 	uint32 WriteIndex = 0;
 
 	for (uint32 ReadIndex = 0;
-		ReadIndex < PacketCount;
-		++ReadIndex)
+	     ReadIndex < PacketCount;
+	     ++ReadIndex)
 	{
 		FRenderPacket& Packet =
-			InOutRenderQueue[ReadIndex];
+		    InOutRenderQueue[ReadIndex];
 
 		if (Packet.IsSpriteParticle())
 		{
 			OutParticlePackets.Add(
-				std::move(Packet));
+			    std::move(Packet));
 
 			continue;
 		}
@@ -362,7 +370,7 @@ void FParticleSpriteRenderer::CollectPackets(
 		if (WriteIndex != ReadIndex)
 		{
 			InOutRenderQueue[WriteIndex] =
-				std::move(Packet);
+			    std::move(Packet);
 		}
 
 		++WriteIndex;
@@ -371,22 +379,22 @@ void FParticleSpriteRenderer::CollectPackets(
 	// 패킷 배열만 줄인다.
 	// StoreWorldMatrix()가 사용하는 MatrixBlocks는 유지한다.
 	InOutRenderQueue.SetNum(
-		static_cast<int32>(WriteIndex),
-		false);
+	    static_cast<int32>(WriteIndex),
+	    false);
 
 	// 이미터 배치 간 거리 정렬.
 	std::stable_sort(
-		OutParticlePackets.begin(),
-		OutParticlePackets.end(),
-		[](const FRenderPacket& A, const FRenderPacket& B)
-		{
-			return A.CameraToParticleDistance > B.CameraToParticleDistance;
-		});
+	    OutParticlePackets.begin(),
+	    OutParticlePackets.end(),
+	    [](const FRenderPacket& A, const FRenderPacket& B)
+	    {
+		    return A.CameraToParticleDistance > B.CameraToParticleDistance;
+	    });
 }
 
 void FParticleSpriteRenderer::OnRender(
-	const TArray<FRenderPacket>& ParticlePackets,
-	const FParticleSpriteView& View)
+    const TArray<FRenderPacket>& ParticlePackets,
+    const FParticleSpriteView& View)
 {
 	if (ParticlePackets.Num() == 0)
 	{
@@ -401,11 +409,11 @@ void FParticleSpriteRenderer::OnRender(
 		}
 
 		if (!Draw(
-			Packet.SpriteInstances,
-			Packet.Material,
-			View,
-			Packet.ParticleScreenAlignment,
-			Packet.ParticleAxisLock))
+		        Packet.SpriteInstances,
+		        Packet.Material,
+		        View,
+		        Packet.ParticleScreenAlignment,
+		        Packet.ParticleAxisLock))
 		{
 			HTR_LOG(
 			    Error,
