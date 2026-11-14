@@ -266,8 +266,8 @@ PS_INPUT mainVS(VS_INPUT Input)
     
     float3 WorldPosition =
         Input.Center
-        + CameraRight * RotatedOffset.x
-        + CameraUp * RotatedOffset.y;
+        + Right * RotatedOffset.x
+        + Up * RotatedOffset.y;
     
     Output.Position = mul(
         float4(WorldPosition, 1.0f),
